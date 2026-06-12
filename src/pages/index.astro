@@ -46,40 +46,105 @@ import { Icon } from 'astro-icon/components';
   .verb-cycle .verb.out { opacity:0; transform:translateY(-8px); filter:blur(3px); }
   .verb-cycle .verb.in  { opacity:0; transform:translateY(10px); filter:blur(3px); }
 
-  /* === Example slot machine — "need X → a specialist" === */
-  .ex-band {
-    display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
-    gap:.5rem .65rem; font-family:'Fraunces',serif;
-    font-size:clamp(1.05rem,2.6vw,1.6rem); line-height:1.5;
+  /* === Forge demo — user request → Gaia creates best-fit soul === */
+  .forge-lab {
+    display:grid; grid-template-columns:1fr; gap:1rem;
+    max-width:820px; margin:2.25rem auto 0; text-align:left;
   }
-  .ex-lead { color:var(--ink-soft); }
-  .ex-arrow { color:var(--kelp); font-family:'Cinzel',serif; }
-  /* reel = 2-row window: active pick centered, neighbours half-peek and fade at the edges */
-  .reel {
-    position:relative; display:inline-block; overflow:hidden;
-    height:3em; vertical-align:middle;
-    -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 34%, #000 66%, transparent 100%);
-    mask-image:linear-gradient(180deg, transparent 0%, #000 34%, #000 66%, transparent 100%);
+  @media (min-width:820px) {
+    .forge-lab { grid-template-columns:minmax(0,1.05fr) 72px minmax(0,.95fr); align-items:stretch; }
   }
-  .reel-need { width:9em; }
-  .reel-role { width:10.5em; }
-  .reel-strip { display:flex; flex-direction:column; will-change:transform; }
-  .reel-strip > span { height:1.5em; line-height:1.5em; text-align:center; white-space:nowrap; }
-  .reel-need .reel-strip > span { color:var(--ink); font-weight:600; }
-  .reel-role .reel-strip > span { color:var(--moss); font-style:italic; font-weight:600; }
-  /* faint payline framing the active row */
-  .slot-line { position:relative; display:inline-block; }
-  .slot-line::before, .slot-line::after {
-    content:""; position:absolute; left:0; right:0; height:1px;
-    background:color-mix(in srgb, var(--rule) 70%, transparent); pointer-events:none;
+  .forge-panel {
+    border:1px solid var(--rule); background:var(--surface);
+    min-height:238px; padding:1.1rem; position:relative; overflow:hidden;
   }
-  .slot-line::before { top:calc(50% - .75em); }
-  .slot-line::after  { top:calc(50% + .75em); }
+  .forge-panel::after {
+    content:""; position:absolute; inset:auto 1.1rem 0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--moss), transparent);
+    opacity:.45;
+  }
+  .forge-kicker {
+    font-family:'JetBrains Mono',monospace; font-size:.68rem;
+    text-transform:uppercase; letter-spacing:.14em; color:var(--kelp);
+  }
+  .request-card {
+    margin-top:1rem; min-height:118px; border:1px solid color-mix(in srgb, var(--rule) 78%, transparent);
+    background:var(--bg); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;
+    transition:opacity .28s ease, transform .28s ease, border-color .28s ease;
+    animation:forge-card-breathe 3.4s ease-in-out infinite;
+  }
+  .request-card.is-switching { opacity:.28; transform:translateY(8px); }
+  .request-text {
+    font-family:'Fraunces',serif; font-size:clamp(1.05rem,2.8vw,1.45rem);
+    line-height:1.28; color:var(--ink);
+  }
+  .request-meta { margin-top:1rem; font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--ink-soft); }
+  .forge-bridge {
+    display:flex; align-items:center; justify-content:center; min-height:56px;
+    color:var(--moss); font-family:'Cinzel',serif; letter-spacing:.28em; font-size:.68rem;
+  }
+  .forge-pulse {
+    width:44px; height:44px; border:1px solid var(--moss); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .forge-pulse::before, .forge-pulse::after {
+    content:""; position:absolute; inset:-8px; border:1px solid var(--moss); border-radius:50%;
+    opacity:.45; animation:forge-ring 2.2s ease-out infinite;
+  }
+  .forge-pulse::after { animation-delay:.75s; }
+  @keyframes forge-ring {
+    0% { transform:scale(.72); opacity:.6; }
+    100% { transform:scale(1.45); opacity:0; }
+  }
+  .agent-card {
+    margin-top:1rem; border:1px solid color-mix(in srgb, var(--moss) 72%, var(--rule));
+    background:color-mix(in srgb, var(--moss) 6%, var(--surface)); padding:1rem;
+    min-height:178px; transition:opacity .28s ease, transform .28s ease;
+    animation:forge-card-breathe 3.4s ease-in-out infinite .25s;
+  }
+  .agent-card.is-switching { opacity:.3; transform:translateY(8px); }
+  .agent-role {
+    font-family:'Fraunces',serif; color:var(--moss); font-size:clamp(1.2rem,3vw,1.7rem);
+    font-weight:600; font-style:italic; line-height:1.12;
+  }
+  .agent-fit { margin-top:.55rem; color:var(--ink-soft); font-size:.86rem; line-height:1.55; }
+  .agent-tools {
+    margin-top:1rem; display:flex; flex-wrap:wrap; gap:.45rem;
+  }
+  .agent-tools span {
+    border:1px solid color-mix(in srgb, var(--rule) 85%, transparent);
+    padding:.28rem .5rem; font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--ink-soft);
+    background:color-mix(in srgb, var(--bg) 72%, transparent);
+  }
+  .forge-steps {
+    margin-top:1rem; display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem;
+    font-family:'JetBrains Mono',monospace; font-size:.66rem; color:var(--ink-soft);
+  }
+  .forge-step {
+    border-top:1px solid var(--rule); padding-top:.5rem; opacity:.55;
+    transition:opacity .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .forge-step.active { opacity:1; color:var(--moss); border-color:var(--moss); }
+  @keyframes forge-card-breathe {
+    0%, 100% { border-color:color-mix(in srgb, var(--rule) 78%, transparent); }
+    50% { border-color:color-mix(in srgb, var(--moss) 78%, var(--rule)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .forge-pulse::before, .forge-pulse::after { animation:none; opacity:.2; }
+    .request-card, .agent-card { animation:none; }
+    .request-card, .agent-card, .forge-step { transition:none; }
+  }
 
   .card { background:var(--surface); border:1px solid var(--rule); border-radius:0; transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .25s; }
   .card:hover { transform:translateY(-2px); border-color:var(--moss); }
 
   .drop { font-family:'Cinzel',serif; font-weight:900; color:var(--moss); opacity:.18; line-height:.85; user-select:none; }
+
+  .hero-compact { padding-top:3.75rem; padding-bottom:3.25rem; }
+  .hero-compact h1 { max-width:11ch; }
+  @media (max-width:767px) {
+    .hero-compact { padding-top:2.7rem; padding-bottom:2.5rem; }
+  }
 
   /* Terminal shell block — parchment in light theme, phosphor green in dark */
   .shell-wrap { position:relative; border:1px solid var(--rule); box-shadow:0 24px 60px -32px color-mix(in srgb, var(--ink) 45%, transparent); }
@@ -191,7 +256,7 @@ import { Icon } from 'astro-icon/components';
   .tweet-empty { border:1px dashed var(--rule); padding:1.5rem; text-align:center; color:var(--ink-soft); font-size:.84rem; }
 </style>
 
-<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-24">
+<main class="hero-compact relative z-10 max-w-5xl mx-auto px-6">
   <div class="grid md:grid-cols-12 gap-10 items-center">
     <div class="md:col-span-7">
       <p class="eyebrow">Γαῖα · agents that build agents</p>
@@ -200,14 +265,14 @@ import { Icon } from 'astro-icon/components';
         when you can <span class="verb-cycle"><span id="verb" class="verb">forge</span></span><br/>
         someone to do it?
       </h1>
-      <div class="mt-10 flex items-start gap-6">
+      <div class="mt-7 flex items-start gap-6">
         <span class="drop text-[6.5rem] hidden sm:block" aria-hidden="true">Γ</span>
         <p class="muted max-w-md text-[15px] leading-relaxed pt-2">
           <span class="glitch-wrap glitching"><span class="gw-en">Gaia</span><span class="gw-gr" aria-hidden="true">Γαῖα</span></span>
           is a new kind of AI agent. Instead of doing every task itself, it builds the agents that do. It picks the right one for the job, makes a new one when nothing fits, and keeps making them better as they go.
         </p>
       </div>
-      <div class="mt-10 flex flex-wrap items-center gap-3">
+      <div class="mt-7 flex flex-wrap items-center gap-3">
         <a id="starBadge" href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-primary">
           <span style="color:var(--gold);">★</span>
           Star on GitHub
@@ -215,7 +280,7 @@ import { Icon } from 'astro-icon/components';
         </a>
         <a href="#install" class="btn btn-ghost">Get started ↓</a>
       </div>
-      <div class="mt-6 flex items-center gap-2 text-xs muted">
+      <div class="mt-4 flex items-center gap-2 text-xs muted">
         <span class="live"></span> open source · MIT · runs on macOS, Linux, Windows
       </div>
     </div>
@@ -228,54 +293,10 @@ import { Icon } from 'astro-icon/components';
   </div>
 </main>
 
-<section class="relative z-10 max-w-5xl mx-auto px-6 pt-8 pb-20 text-center">
-  <p class="eyebrow mb-5">the gaia way</p>
-  <h2 class="display text-3xl md:text-[2.6rem] leading-[1.1] tracking-tight max-w-2xl mx-auto">
-    Don't do the task.<br/>
-    <span class="italic" style="color:var(--moss);">Spin up someone who will.</span>
-  </h2>
-
-  <div class="slot-line mt-12">
-    <div class="ex-band">
-      <span class="ex-lead">need</span>
-      <span class="reel reel-need"><span class="reel-strip" id="stripNeed"></span></span>
-      <span class="ex-arrow" aria-hidden="true">⟶</span>
-      <span class="ex-lead">Gaia forges</span>
-      <span class="reel reel-role"><span class="reel-strip" id="stripRole"></span></span>
-    </div>
-  </div>
-
-  <p class="muted text-[15px] mt-12 max-w-lg mx-auto leading-relaxed">
-    Just say what you want, in plain words. Gaia builds the right specialist for it, every time, then puts it to work. No setup, no prompt wrangling, no fixed menu of bots to pick from.
-  </p>
-  <a href="#install" class="btn btn-primary mt-8">Get started ↓</a>
-</section>
-
-<section class="relative z-10 max-w-5xl mx-auto px-6 pb-10">
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[color:var(--rule)]">
-    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
-      <div class="display text-4xl font-bold" style="color:var(--moss);">∞</div>
-      <div class="text-xs muted mt-2 tracking-wide uppercase" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;">Souls forged</div>
-    </div>
-    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
-      <div class="display text-4xl font-bold" style="color:var(--moss);">200+</div>
-      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">LLMs supported</div>
-    </div>
-    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
-      <div class="display text-4xl font-bold" style="color:var(--moss);">MIT</div>
-      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">License</div>
-    </div>
-    <div class="stat-block p-6 text-center">
-      <div class="display text-4xl font-bold" style="color:var(--moss);">0</div>
-      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Walled gardens</div>
-    </div>
-  </div>
-</section>
-
 <hr class="hr-script max-w-5xl mx-auto" />
 
-<section id="install" class="relative z-10 max-w-5xl mx-auto px-6 py-24">
-  <div class="grid md:grid-cols-12 gap-10">
+<section id="install" class="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-14">
+  <div class="grid md:grid-cols-12 gap-8 items-center">
     <div class="md:col-span-4">
       <p class="eyebrow">I · Begin</p>
       <h2 class="display text-3xl md:text-4xl mt-4 leading-tight tracking-tight">One line.<br/>Any machine.</h2>
@@ -304,6 +325,67 @@ import { Icon } from 'astro-icon/components';
 </section>
 
 <hr class="hr-script max-w-5xl mx-auto" />
+
+<section class="relative z-10 max-w-5xl mx-auto px-6 pt-16 pb-20 text-center">
+  <p class="eyebrow mb-5">the gaia way</p>
+  <h2 class="display text-3xl md:text-[2.6rem] leading-[1.1] tracking-tight max-w-2xl mx-auto">
+    Don't do the task.<br/>
+    <span class="italic" style="color:var(--moss);">Spin up someone who will.</span>
+  </h2>
+
+  <div class="forge-lab" aria-live="polite">
+    <div class="forge-panel">
+      <div class="forge-kicker">user asks</div>
+      <div id="requestCard" class="request-card">
+        <div id="requestText" class="request-text">Build me a launch page and make it feel alive.</div>
+        <div id="requestMeta" class="request-meta">needs: copy · design · frontend</div>
+      </div>
+      <div class="forge-steps" aria-hidden="true">
+        <div class="forge-step active" data-forge-step="read">read task</div>
+        <div class="forge-step" data-forge-step="shape">shape soul</div>
+        <div class="forge-step" data-forge-step="assign">assign tools</div>
+      </div>
+    </div>
+    <div class="forge-bridge" aria-hidden="true">
+      <div class="forge-pulse">Γ</div>
+    </div>
+    <div class="forge-panel">
+      <div class="forge-kicker">gaia forges</div>
+      <div id="agentCard" class="agent-card">
+        <div id="agentRole" class="agent-role">soul · product web designer</div>
+        <p id="agentFit" class="agent-fit">Best fit for turning rough intent into a polished page, copy, layout, and deployable frontend.</p>
+        <div id="agentTools" class="agent-tools">
+          <span>Astro</span><span>Tailwind</span><span>copy pass</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="muted text-[15px] mt-10 max-w-lg mx-auto leading-relaxed">
+    Just say what you want, in plain words. Gaia builds the right specialist for it, every time, then puts it to work. No setup, no prompt wrangling, no fixed menu of bots to pick from.
+  </p>
+</section>
+
+<section class="relative z-10 max-w-5xl mx-auto px-6 pb-10">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border border-[color:var(--rule)]">
+    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
+      <div class="display text-4xl font-bold" style="color:var(--moss);">∞</div>
+      <div class="text-xs muted mt-2 tracking-wide uppercase" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;">Souls forged</div>
+    </div>
+    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
+      <div class="display text-4xl font-bold" style="color:var(--moss);">200+</div>
+      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">LLMs supported</div>
+    </div>
+    <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
+      <div class="display text-4xl font-bold" style="color:var(--moss);">MIT</div>
+      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">License</div>
+    </div>
+    <div class="stat-block p-6 text-center">
+      <div class="display text-4xl font-bold" style="color:var(--moss);">0</div>
+      <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Walled gardens</div>
+    </div>
+  </div>
+</section>
 
 <section class="relative z-10 max-w-5xl mx-auto px-6 py-24">
   <div class="grid md:grid-cols-12 gap-12">
@@ -563,56 +645,79 @@ import { Icon } from 'astro-icon/components';
   }
   // renderTweetWall(await fetch('/tweets.json').then(r => r.json()));  // ← wire later
 
-  // Example slot machine — need flips one row, then the role reel spins and lands on the match.
+  // Forge demo — cycle real tasks into best-fit agent profiles.
   (function () {
-    var needs = ['a website', 'a workout plan', 'a trip planned', 'your inbox cleared', 'a landing page'];
-    var roles = ['a web designer', 'a personal trainer', 'a travel agent', 'a sharp assistant', 'a brand designer'];
-    var H = 1.5; // row height in em — must match .reel-strip > span height in CSS
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // A reel whose active row sits centered in a 2-row window (neighbours half-peek above/below).
-    function makeReel(strip, items) {
-      if (!strip) return null;
-      var L = items.length, REPEAT = 14;
-      for (var k = 0; k < REPEAT; k++) items.forEach(function (t) {
-        var s = document.createElement('span'); s.textContent = t; strip.appendChild(s);
-      });
-      var pos = L; // start in the 2nd block so a neighbour exists on each side
-      function center(p) { strip.style.transform = 'translateY(' + (-((p - 0.5) * H)) + 'em)'; }
-      center(pos);
-      return {
-        pos: pos,
-        to: function (idx, durMs, ease, turns) {
-          var cur = this.pos % L;
-          var np = this.pos + (turns || 0) * L + ((idx - cur + L) % L);
-          var self = this;
-          if (reduce) { self.pos = L + idx; center(self.pos); return; }
-          strip.style.transition = 'transform ' + durMs + 'ms ' + ease;
-          void strip.offsetHeight;
-          center(np);
-          var done = function () {
-            strip.removeEventListener('transitionend', done);
-            strip.style.transition = 'none';
-            self.pos = L + idx; // collapse back into the middle block, no visible jump
-            center(self.pos);
-          };
-          strip.addEventListener('transitionend', done);
-        }
-      };
-    }
-
-    var needReel = makeReel(document.getElementById('stripNeed'), needs);
-    var roleReel = makeReel(document.getElementById('stripRole'), roles);
-    if (!needReel || !roleReel) return;
-
+    var examples = [
+      {
+        request: 'Plan a two-week Japan trip around food, trains, and quiet hotels.',
+        meta: 'needs: research · itinerary · booking logic',
+        role: 'soul · travel operations planner',
+        fit: 'Best fit for routes, constraints, reservations, budgets, and day-by-day sequencing.',
+        tools: ['browser', 'maps', 'calendar']
+      },
+      {
+        request: 'Turn my messy gym notes into an A/B plan I can follow every week.',
+        meta: 'needs: coaching · structure · tracking',
+        role: 'soul · strength program coach',
+        fit: 'Best fit for progressive overload, recovery windows, exercise swaps, and measurable routines.',
+        tools: ['memory', 'spreadsheet', 'habit loop']
+      },
+      {
+        request: 'Build me a launch page and make it feel alive.',
+        meta: 'needs: copy · design · frontend',
+        role: 'soul · product web designer',
+        fit: 'Best fit for turning rough intent into a polished page, copy, layout, and deployable frontend.',
+        tools: ['Astro', 'Tailwind', 'copy pass']
+      },
+      {
+        request: 'Clean my inbox and only tell me what actually needs me.',
+        meta: 'needs: triage · tone · prioritization',
+        role: 'soul · executive inbox operator',
+        fit: 'Best fit for sorting threads, drafting replies, flagging decisions, and preserving your voice.',
+        tools: ['email', 'rules', 'summaries']
+      }
+    ];
+    var requestCard = document.getElementById('requestCard');
+    var agentCard = document.getElementById('agentCard');
+    var requestText = document.getElementById('requestText');
+    var requestMeta = document.getElementById('requestMeta');
+    var agentRole = document.getElementById('agentRole');
+    var agentFit = document.getElementById('agentFit');
+    var agentTools = document.getElementById('agentTools');
+    var steps = Array.prototype.slice.call(document.querySelectorAll('[data-forge-step]'));
+    if (!requestCard || !agentCard || !requestText || !agentRole || reduce) return;
     var i = 0;
-    setInterval(function () {
-      i = (i + 1) % needs.length;
-      needReel.to(i, 520, 'cubic-bezier(.2,.85,.25,1)', 0);          // need flips one row
+    function setStep(active) {
+      steps.forEach(function (step, idx) { step.classList.toggle('active', idx <= active); });
+    }
+    function render(example) {
+      requestText.textContent = example.request;
+      requestMeta.textContent = example.meta;
+      agentRole.textContent = example.role;
+      agentFit.textContent = example.fit;
+      agentTools.innerHTML = '';
+      example.tools.forEach(function (tool) {
+        var tag = document.createElement('span');
+        tag.textContent = tool;
+        agentTools.appendChild(tag);
+      });
+    }
+    function cycleForge() {
+      i = (i + 1) % examples.length;
+      requestCard.classList.add('is-switching');
+      agentCard.classList.add('is-switching');
+      setStep(0);
+      setTimeout(function () { setStep(1); }, 360);
       setTimeout(function () {
-        roleReel.to(i, 1200, 'cubic-bezier(.13,.7,.12,1)', 3);       // role spins 3 turns, lands
-      }, 600);
-    }, 3600);
+        render(examples[i]);
+        setStep(2);
+        requestCard.classList.remove('is-switching');
+        agentCard.classList.remove('is-switching');
+      }, 720);
+    }
+    setTimeout(cycleForge, 900);
+    setInterval(cycleForge, 3200);
   })();
 
   // Verb cycle — no reduced-motion guard, always runs

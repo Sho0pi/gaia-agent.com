@@ -233,8 +233,38 @@ const canonical = `${site}${Astro.url.pathname}`;
     document.getElementById('mobileNav').classList.toggle('open');
   };
 
+  // Smooth same-page anchor scrolling with header offset. This avoids browser differences
+  // where CSS scroll-behavior can be ignored.
+  function smoothScrollTo(targetY, duration) {
+    var startY = window.scrollY;
+    var distance = targetY - startY;
+    var startTime = performance.now();
+    function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function step(now) {
+      var t = Math.min(1, (now - startTime) / duration);
+      window.scrollTo(0, startY + distance * ease(t));
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href^="#"], a[href^="/#"]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    var hash = href.charAt(0) === '#' ? href : new URL(href, window.location.href).hash;
+    if (!hash || (href.charAt(0) === '/' && window.location.pathname !== '/')) return;
+    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!target) return;
+    e.preventDefault();
+    document.getElementById('mobileNav').classList.remove('open');
+    var headerOffset = 96;
+    var targetY = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+    smoothScrollTo(Math.max(0, targetY), 680);
+    history.pushState(null, '', hash);
+  });
+
   // Close mobile nav when a link inside it is tapped.
-  // Smooth scroll + header offset handled natively by CSS (scroll-behavior + scroll-margin-top).
   document.getElementById('mobileNav').addEventListener('click', function(e) {
     if (e.target.closest('a')) this.classList.remove('open');
   });
