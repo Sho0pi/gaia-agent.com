@@ -142,38 +142,38 @@ import Layout from '../layouts/Layout.astro';
   <hr class="hr-script mt-16 mb-14" />
 
   <section>
-    <p class="eyebrow mb-8">Core dependencies</p>
+    <p class="eyebrow mb-8">Important trust surfaces</p>
     <div class="dep-grid">
       <article class="dep-card">
         <div class="sec-label">agent runtime</div>
-        <h3 class="display text-2xl mt-3">Reasoning, delegation, memory.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">Gaia's core runtime is built around Google's Agent Development Kit, agent-to-agent coordination, and mem0-backed memory. These are the main trust boundaries for prompts, generated souls, recall, and cross-agent handoff.</p>
+        <h3 class="display text-2xl mt-3">ADK runs the agent loop.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Google ADK is the runtime layer Gaia builds on for agent behavior. The security boundary here is simple: prompts, tool calls, and delegated soul work must stay observable and scoped.</p>
         <div class="dep-tags">
-          <code>google-adk</code><code>a2a-sdk</code><code>mem0ai</code>
+          <code>google-adk</code><code>a2a-sdk</code>
         </div>
       </article>
       <article class="dep-card">
-        <div class="sec-label">connectors</div>
-        <h3 class="display text-2xl mt-3">Where Gaia talks to you.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">Messaging integrations are treated as sensitive surfaces because they carry user messages, channel credentials, and outbound replies. Each connector should have isolated config and clear send/receive permissions.</p>
+        <div class="sec-label">memory</div>
+        <h3 class="display text-2xl mt-3">mem0 is long-term context.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Memory is where Gaia becomes personal. It also creates risk: users need to inspect, delete, export, and disable long-term memory when the remembered context is no longer wanted.</p>
+        <div class="dep-tags">
+          <code>mem0ai</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">channels</div>
+        <h3 class="display text-2xl mt-3">Connectors carry private messages.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Telegram, WhatsApp Cloud, and WhatsApp Web integrations are sensitive because they handle inbound messages, channel credentials, and outbound replies in your name.</p>
         <div class="dep-tags">
           <code>python-telegram-bot</code><code>pywa</code><code>neonize</code>
         </div>
       </article>
       <article class="dep-card">
-        <div class="sec-label">configuration</div>
-        <h3 class="display text-2xl mt-3">Typed settings, explicit state.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">Configuration and secrets should be loaded through typed settings, not scattered through scripts. This keeps model keys, connector tokens, memory paths, and tool scopes easier to audit.</p>
+        <div class="sec-label">browser tools</div>
+        <h3 class="display text-2xl mt-3">Browser access is real action.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Browser automation through Playwright MCP lets Gaia inspect pages and operate web flows. It should be treated like a powerful tool with clear permissions, visible logs, and confirmation before sensitive submissions.</p>
         <div class="dep-tags">
-          <code>pydantic</code><code>pydantic-settings</code><code>pyyaml</code>
-        </div>
-      </article>
-      <article class="dep-card">
-        <div class="sec-label">operator interface</div>
-        <h3 class="display text-2xl mt-3">Controls, logs, and visibility.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">The CLI and TUI are where users should see what Gaia is doing, interrupt bad runs, inspect logs, and manage souls, channels, providers, and permissions.</p>
-        <div class="dep-tags">
-          <code>textual</code><code>typer</code><code>rich</code><code>python-json-logger</code>
+          <code>playwright-mcp</code><code>MCP tools</code>
         </div>
       </article>
     </div>
