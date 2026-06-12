@@ -29,6 +29,18 @@ import Layout from '../layouts/Layout.astro';
   }
   .sec-table td { border-bottom:1px solid var(--rule); padding:1rem; color:var(--ink-soft); vertical-align:top; line-height:1.6; }
   .sec-table td:first-child { color:var(--ink); font-weight:600; }
+  .dep-grid { display:grid; grid-template-columns:1fr; gap:1rem; }
+  @media (min-width:820px) { .dep-grid { grid-template-columns:repeat(2,1fr); } }
+  .dep-card {
+    border:1px solid var(--rule); background:var(--surface); padding:1.2rem;
+  }
+  .dep-tags { margin-top:1rem; display:flex; flex-wrap:wrap; gap:.45rem; }
+  .dep-tags code {
+    border:1px solid color-mix(in srgb, var(--rule) 85%, transparent);
+    background:color-mix(in srgb, var(--bg) 72%, transparent);
+    padding:.28rem .5rem; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+    color:var(--ink-soft);
+  }
   .check-list { display:grid; gap:.75rem; }
   .check-item {
     display:grid; grid-template-columns:auto 1fr; gap:.75rem; align-items:start;
@@ -124,6 +136,46 @@ import Layout from '../layouts/Layout.astro';
           </tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <p class="eyebrow mb-8">Core dependencies</p>
+    <div class="dep-grid">
+      <article class="dep-card">
+        <div class="sec-label">agent runtime</div>
+        <h3 class="display text-2xl mt-3">Reasoning, delegation, memory.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Gaia's core runtime is built around Google's Agent Development Kit, agent-to-agent coordination, and mem0-backed memory. These are the main trust boundaries for prompts, generated souls, recall, and cross-agent handoff.</p>
+        <div class="dep-tags">
+          <code>google-adk</code><code>a2a-sdk</code><code>mem0ai</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">connectors</div>
+        <h3 class="display text-2xl mt-3">Where Gaia talks to you.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Messaging integrations are treated as sensitive surfaces because they carry user messages, channel credentials, and outbound replies. Each connector should have isolated config and clear send/receive permissions.</p>
+        <div class="dep-tags">
+          <code>python-telegram-bot</code><code>pywa</code><code>neonize</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">configuration</div>
+        <h3 class="display text-2xl mt-3">Typed settings, explicit state.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Configuration and secrets should be loaded through typed settings, not scattered through scripts. This keeps model keys, connector tokens, memory paths, and tool scopes easier to audit.</p>
+        <div class="dep-tags">
+          <code>pydantic</code><code>pydantic-settings</code><code>pyyaml</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">operator interface</div>
+        <h3 class="display text-2xl mt-3">Controls, logs, and visibility.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">The CLI and TUI are where users should see what Gaia is doing, interrupt bad runs, inspect logs, and manage souls, channels, providers, and permissions.</p>
+        <div class="dep-tags">
+          <code>textual</code><code>typer</code><code>rich</code><code>python-json-logger</code>
+        </div>
+      </article>
     </div>
   </section>
 
