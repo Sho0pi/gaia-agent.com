@@ -1,0 +1,217 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Why Gaia · agents that build agents"
+  description="OpenClaw orchestrates. Hermes iterates. Gaia creates. See why the soul smith pattern is a different category entirely."
+  active="why-gaia"
+>
+
+<style is:global>
+  /* Positioning cards */
+  .pos-card { border:1px solid var(--rule); background:var(--surface); padding:1.75rem; }
+  .pos-card.gaia { border-color:var(--moss); background:color-mix(in srgb, var(--moss) 8%, var(--surface)); }
+  .pos-label { font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.25em; text-transform:uppercase; }
+  .pos-tagline { font-family:'Fraunces',serif; font-size:1.25rem; font-weight:600; margin-top:.5rem; line-height:1.3; }
+  .pos-vibe { font-size:.82rem; margin-top:.5rem; font-style:italic; }
+  .pos-list { margin-top:1rem; font-size:.84rem; line-height:1.8; color:var(--ink-soft); }
+  .pos-list li::before { content:"→ "; color:var(--moss); }
+
+  /* Comparison table */
+  .comp-table { border-collapse:collapse; width:100%; }
+  .comp-th { font-family:'Cinzel',serif; font-weight:500; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); padding:.85rem 1.25rem; border-bottom:2px solid var(--rule); text-align:center; white-space:nowrap; }
+  .comp-th.text-left { text-align:left; }
+  .comp-th.comp-gaia { color:var(--moss); background:color-mix(in srgb, var(--moss) 10%, transparent); border-bottom:3px solid var(--moss); }
+  .comp-cat { background:var(--bg-deep,var(--bg)); padding:.5rem 1.25rem; font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); border-bottom:1px solid var(--rule); }
+  .comp-row td { border-bottom:1px solid var(--rule); }
+  .comp-td { padding:.85rem 1.25rem; text-align:center; color:var(--ink-soft); font-size:.86rem; }
+  .comp-td.comp-label { text-align:left; color:var(--ink); font-weight:500; }
+  .comp-td.comp-gaia { background:color-mix(in srgb, var(--moss) 6%, transparent); }
+  .comp-yes { color:var(--moss); font-weight:700; }
+  .comp-win { color:var(--moss); font-weight:600; font-size:.8rem; }
+  .comp-no { color:var(--rule); font-size:1rem; font-weight:700; }
+  .comp-partial { color:var(--gold); font-size:.8rem; }
+  .highlight-row td { background:color-mix(in srgb, var(--moss) 4%, transparent); }
+  .highlight-row .comp-td.comp-gaia { background:color-mix(in srgb, var(--moss) 14%, transparent); }
+
+  /* Pull quote */
+  .pullquote { border-left:3px solid var(--moss); padding:.75rem 0 .75rem 1.5rem; font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--ink-soft); line-height:1.6; }
+  .pullquote cite { display:block; font-style:normal; font-size:.75rem; letter-spacing:.1em; margin-top:.5rem; font-family:'JetBrains Mono',monospace; color:var(--kelp); }
+</style>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32">
+
+  <!-- Hero -->
+  <p class="eyebrow">Why Gaia</p>
+  <h1 class="display mt-4 text-5xl md:text-6xl leading-[1.02] tracking-tight max-w-3xl">
+    OpenClaw orchestrates.<br/>
+    Hermes iterates.<br/>
+    <span class="italic" style="color:var(--moss);">Gaia creates.</span>
+  </h1>
+  <p class="muted text-[16px] mt-6 max-w-2xl leading-relaxed">
+    OpenClaw and Hermes are both genuinely good agents. They just share one blind spot: the set of agents is fixed. When a problem shows up that none of them were built for, neither can go and <span class="display italic" style="color:var(--ink);font-weight:600;">build a new specialist from scratch.</span> Gaia can.
+  </p>
+
+  <hr class="hr-script mt-16 mb-16" />
+
+  <!-- Positioning triangle -->
+  <p class="eyebrow mb-8">Three philosophies</p>
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="pos-card">
+      <div class="pos-label muted">OpenClaw</div>
+      <div class="pos-tagline">Managing a system</div>
+      <div class="pos-vibe muted">"Enterprise control room"</div>
+      <ul class="pos-list">
+        <li>Multi-channel native (WhatsApp, Slack, Discord)</li>
+        <li>Persistent agent teams across sessions</li>
+        <li>ClawHub marketplace, download skills fast</li>
+        <li>Heavy: rich memory layers, can get bloated</li>
+        <li>Best for: orchestrating many agents across surfaces</li>
+      </ul>
+    </div>
+    <div class="pos-card">
+      <div class="pos-label muted">Hermes Agent</div>
+      <div class="pos-tagline">Training a system</div>
+      <div class="pos-vibe muted">"Relentless automation intern"</div>
+      <ul class="pos-list">
+        <li>Lean, search-first memory, no bloat</li>
+        <li>Self-generates skills from repeated patterns</li>
+        <li>Per-skill model routing (200+ via OpenRouter)</li>
+        <li>VPS + cron friendly, transparent context</li>
+        <li>Best for: automation that needs to improve over time</li>
+      </ul>
+    </div>
+    <div class="pos-card gaia">
+      <div class="pos-label" style="color:var(--moss);">Gaia ✦</div>
+      <div class="pos-tagline">Building a system</div>
+      <div class="pos-vibe" style="color:var(--moss);">"Mother of agents"</div>
+      <ul class="pos-list">
+        <li>Detects complex tasks and delegates to specialist souls</li>
+        <li>Builds a new agent from scratch when nothing fits</li>
+        <li>Assigns the best LLM per soul, not per conversation</li>
+        <li>Self-learning loop across the entire soul network</li>
+        <li>Best for: problems you didn't know you'd need to solve</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <blockquote class="pullquote">
+      "OpenClaw when the problem is orchestration. Hermes when the problem is automation that needs to get better over time."
+      <cite>Composio · OpenClaw vs Hermes Agent · 2026</cite>
+    </blockquote>
+    <p class="muted text-sm mt-4 leading-relaxed max-w-2xl">And Gaia for the problem you haven't even defined yet. The soul smith doesn't wait around for you to design the system. It builds it as the work shows up.</p>
+  </div>
+
+  <hr class="hr-script mt-16 mb-16" />
+
+  <!-- Table -->
+  <p class="eyebrow mb-8">Head-to-head</p>
+  <div class="overflow-x-auto">
+    <table class="comp-table text-sm">
+      <thead>
+        <tr>
+          <th class="comp-th text-left" style="min-width:200px;">Capability</th>
+          <th class="comp-th comp-gaia">✦ Gaia</th>
+          <th class="comp-th">OpenClaw</th>
+          <th class="comp-th">Hermes Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr><td colspan="4" class="comp-cat">Architecture</td></tr>
+        <tr class="comp-row highlight-row">
+          <td class="comp-td comp-label">Agents that forge new agents</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦ soul smith</span></td>
+          <td class="comp-td"><span class="comp-no">—</span></td>
+          <td class="comp-td"><span class="comp-no">—</span></td>
+        </tr>
+        <tr class="comp-row highlight-row">
+          <td class="comp-td comp-label">Best-fit LLM per soul</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦ per agent</span></td>
+          <td class="comp-td"><span class="comp-no">—</span></td>
+          <td class="comp-td"><span class="comp-partial">per skill only</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Multi-agent workflow</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-win">✓ persistent teams</span></td>
+          <td class="comp-td"><span class="comp-partial">isolated sub-agents</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Multi-channel (WhatsApp/Telegram)</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-win">✓ native</span></td>
+          <td class="comp-td"><span class="comp-partial">possible, not focus</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Runs on VPS / cloud</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-partial">laptop-first</span></td>
+          <td class="comp-td"><span class="comp-win">✓ Docker/Modal/SSH</span></td>
+        </tr>
+
+        <tr><td colspan="4" class="comp-cat">Memory &amp; Learning</td></tr>
+        <tr class="comp-row highlight-row">
+          <td class="comp-td comp-label">Self-learning loop</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦ full network</span></td>
+          <td class="comp-td"><span class="comp-no">—</span></td>
+          <td class="comp-td"><span class="comp-partial">skill generation</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Short + long-term memory</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-partial">rich but bloat-prone</span></td>
+          <td class="comp-td"><span class="comp-win">✓ lean + FTS search</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Context transparency</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-partial">hidden / logs</span></td>
+          <td class="comp-td"><span class="comp-win">✓ shown in UI</span></td>
+        </tr>
+
+        <tr><td colspan="4" class="comp-cat">Ecosystem</td></tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">MCP / skills support</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-win">✓ ClawHub marketplace</span></td>
+          <td class="comp-td"><span class="comp-yes">✓</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">LLM-agnostic</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-yes">✓</span></td>
+          <td class="comp-td"><span class="comp-win">✓ 200+ via OpenRouter</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Open source · MIT</td>
+          <td class="comp-td comp-gaia"><span class="comp-yes">✦</span></td>
+          <td class="comp-td"><span class="comp-yes">✓</span></td>
+          <td class="comp-td"><span class="comp-yes">✓</span></td>
+        </tr>
+        <tr class="comp-row">
+          <td class="comp-td comp-label">Community maturity</td>
+          <td class="comp-td comp-gaia"><span class="comp-partial">growing</span></td>
+          <td class="comp-td"><span class="comp-win">✓ largest</span></td>
+          <td class="comp-td"><span class="comp-yes">✓ Nous Discord</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <p class="muted text-xs mono mt-5">✦ Gaia exclusive &nbsp;·&nbsp; ✓ supported &nbsp;·&nbsp; — not available &nbsp;·&nbsp; Sources: composio.dev/content/openclaw-vs-hermes-agent, github.com/NousResearch/hermes-agent, openclaw.ai</p>
+
+  <hr class="hr-script mt-16 mb-12" />
+
+  <!-- CTA -->
+  <h2 class="display text-3xl md:text-4xl tracking-tight">Ready to plant a goal?</h2>
+  <p class="muted mt-3 text-[15px]">Gaia's free, open source, and itching for something complicated to chew on.</p>
+  <div class="mt-8 flex flex-wrap gap-3">
+    <a href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-primary">Star on GitHub ↗</a>
+    <a href="/" class="btn btn-ghost">← Back to home</a>
+  </div>
+
+</main>
+
+</Layout>

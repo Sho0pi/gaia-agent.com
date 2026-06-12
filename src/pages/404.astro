@@ -1,0 +1,44 @@
+﻿---
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>404 · Gaia</title>
+<link rel="icon" type="image/png" href="/gaia-icon.png" />
+<script is:inline>
+  // Respect saved theme
+  document.documentElement.dataset.theme = localStorage.getItem('gaia-theme') || 'dark';
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Fraunces:opsz,wght,SOFT@9..144,700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#F2EDE0; --ink:#0E1A14; --moss:#2B5C44; --ink-soft:#3D4A40; --rule:#C9BFA3; }
+  [data-theme="dark"] { --bg:#0B1612; --ink:#EFE7D2; --moss:#7BC79F; --ink-soft:#A8B5AC; --rule:#234034; }
+  * { -webkit-font-smoothing:antialiased; }
+  html, body { background:var(--bg); color:var(--ink); font-family:'Inter',system-ui,sans-serif; margin:0; height:100%; }
+  .display { font-family:'Fraunces',serif; font-optical-sizing:auto; }
+  .brand { font-family:'Cinzel',serif; font-weight:900; letter-spacing:.06em; }
+  .muted { color:var(--ink-soft); }
+  .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1.25rem; font-weight:500; font-size:.92rem; border-radius:0; transition:all .2s; border:1px solid transparent; }
+  .btn-primary { background:var(--ink); color:var(--bg); }
+  .btn-primary:hover { background:var(--moss); }
+  .btn-ghost { background:transparent; color:var(--ink); border-color:var(--rule); }
+  body { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:2rem; }
+  .big { font-family:'Cinzel',serif; font-weight:900; font-size:8rem; line-height:1; color:var(--moss); opacity:.2; }
+</style>
+</head>
+<body>
+  <div class="big">404</div>
+  <h1 class="display mt-2" style="font-size:2rem;font-weight:700;">Soul not found.</h1>
+  <p class="muted mt-3 max-w-sm" style="line-height:1.6;">This page isn't here. Gaia probably could've made you one if you'd asked it nicely.</p>
+  <div class="mt-8 flex gap-3 flex-wrap justify-center">
+    <a href="/" class="btn btn-primary">← Back home</a>
+    <a href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+  </div>
+  <div class="brand mt-12" style="font-size:.75rem;letter-spacing:.2em;opacity:.4;">GAIA</div>
+</body>
+</html>
+

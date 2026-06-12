@@ -1,0 +1,273 @@
+---
+import { SEO } from 'astro-seo';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description: string;
+  active?: string;
+}
+const { title, description, active = '' } = Astro.props;
+
+const site = 'https://gaia-agent.com';
+const path = Astro.url.pathname.replace(/^\/|\/$/g, '');
+const ogSlug = path === 'why-gaia' ? 'why-gaia' : 'index';
+const ogImage = `${site}/og/${ogSlug}.png`;
+const canonical = `${site}${Astro.url.pathname}`;
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<SEO
+  title={title}
+  description={description}
+  canonical={canonical}
+  openGraph={{
+    basic: { title, type: 'website', image: ogImage, url: canonical },
+    optional: { description, siteName: 'Gaia' },
+    image: { alt: 'Gaia, agents that build agents' },
+  }}
+  twitter={{ card: 'summary_large_image', title, description, image: ogImage }}
+/>
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="icon" type="image/png" href="/gaia-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script is:inline>
+  // Set theme before first paint to avoid a flash of the wrong theme
+  document.documentElement.dataset.theme = localStorage.getItem('gaia-theme') || 'dark';
+</script>
+<style is:global>
+  :root {
+    --bg:#F2EDE0; --bg-deep:#EAE2D0; --surface:#FBF7EC;
+    --rule:#C9BFA3; --ink:#0E1A14; --ink-soft:#3D4A40;
+    --moss:#2B5C44; --sea:#0E7490; --kelp:#7AA68C;
+    --glow:#00C896; --gold:#A88934;
+  }
+  [data-theme="dark"] {
+    --bg:#0B1612; --bg-deep:#070F0C; --surface:#11211B;
+    --rule:#234034; --ink:#EFE7D2; --ink-soft:#A8B5AC;
+    --moss:#7BC79F; --sea:#67E8F9; --kelp:#5A8A72;
+    --glow:#22F0A8; --gold:#D4B065;
+  }
+  * { -webkit-font-smoothing:antialiased; }
+  html, body { background:var(--bg); color:var(--ink); }
+  body { font-family:'Inter',system-ui,sans-serif; font-feature-settings:"ss01","cv11"; }
+
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(168,137,52,0.05), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(43,92,68,0.06), transparent 50%);
+  }
+  [data-theme="dark"] body::before {
+    background-image:
+      radial-gradient(circle at 30% 0%, rgba(34,240,168,0.08), transparent 50%),
+      radial-gradient(circle at 70% 100%, rgba(103,232,249,0.05), transparent 45%);
+  }
+
+  .display { font-family:'Fraunces',serif; font-optical-sizing:auto; font-variation-settings:"opsz" 144,"SOFT" 30; }
+  .mono { font-family:'JetBrains Mono',ui-monospace,monospace; }
+  .muted { color:var(--ink-soft); }
+  .eyebrow { font-family:'Cinzel',serif; font-weight:500; font-size:.72rem; letter-spacing:.32em; text-transform:uppercase; color:var(--moss); }
+  .brand { font-family:'Cinzel',serif; font-weight:900; letter-spacing:.06em; }
+
+  .hr-script { border:0; height:1px; background:var(--rule); position:relative; }
+  .hr-script::before, .hr-script::after { content:""; position:absolute; top:-3px; width:7px; height:7px; border:1px solid var(--rule); border-radius:50%; background:var(--bg); }
+  .hr-script::before { left:-3px; } .hr-script::after { right:-3px; }
+
+  .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1.25rem; font-weight:500; font-size:.92rem; border-radius:0; transition:all .2s; border:1px solid transparent; }
+  .btn-primary { background:var(--ink); color:var(--bg); }
+  .btn-primary:hover { background:var(--moss); }
+  .btn-ghost { background:transparent; color:var(--ink); border-color:var(--rule); }
+  .btn-ghost:hover { border-color:var(--ink); }
+
+  :focus-visible { outline:2px solid var(--moss); outline-offset:3px; }
+
+  .site-header {
+    position:sticky;
+    top:.85rem;
+    z-index:60;
+    width:calc(100% - 2rem);
+    box-sizing:border-box;
+    padding:.75rem 1.25rem !important;
+    margin-top:.85rem;
+    background:color-mix(in srgb, var(--surface) 72%, transparent);
+    border:1px solid color-mix(in srgb, var(--rule) 78%, transparent);
+    border-radius:999px;
+    box-shadow:0 18px 55px color-mix(in srgb, var(--bg-deep) 62%, transparent), inset 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+  }
+  .site-header::after { display:none; }
+  @media (max-width: 767px) {
+    .site-header { border-radius:24px; padding:.7rem 1rem !important; }
+  }
+
+  /* Theme toggle — glass pill matching the header */
+  .theme-toggle {
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding:.4rem .8rem; border-radius:999px; cursor:pointer;
+    color:var(--ink-soft); font-size:.78rem; line-height:1;
+    background:color-mix(in srgb, var(--surface) 72%, transparent);
+    border:1px solid color-mix(in srgb, var(--rule) 78%, transparent);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    transition:border-color .2s, color .2s, background .2s;
+  }
+  .theme-toggle:hover { border-color:var(--moss); color:var(--moss); }
+  /* Icon shows the mode you'll switch TO (dark → sun/Light, light → moon/Dark). Toggled by CSS, no JS innerHTML. */
+  [data-theme="dark"] .ti-moon, [data-theme="dark"] .ti-label-dark { display:none; }
+  [data-theme="light"] .ti-sun, [data-theme="light"] .ti-label-light { display:none; }
+
+  /* Mobile nav */
+  .mobile-nav { display:none; flex-direction:column; gap:1.5rem; padding:1.5rem 1.5rem; background:var(--surface); border-top:1px solid var(--rule); font-size:.95rem; }
+  .mobile-nav.open { display:flex; }
+  .hamburger { display:flex; flex-direction:column; gap:4px; cursor:pointer; padding:4px; }
+  .hamburger span { width:20px; height:1.5px; background:var(--ink); transition:all .2s; }
+  @media (min-width:768px) { .hamburger { display:none; } }
+
+  /* Vine — scroll progress */
+  .vine { position:fixed; left:32px; top:120px; bottom:120px; width:1px; background:var(--rule); z-index:1; pointer-events:none; display:none; }
+  .vine::before, .vine::after { content:""; position:absolute; left:-3px; width:7px; height:7px; border:1px solid var(--rule); border-radius:50%; background:var(--bg); z-index:0; }
+  .vine::before { top:0; } .vine::after { bottom:0; }
+  .vine-progress { position:absolute; top:0; left:0; width:1px; height:0%; background:linear-gradient(to bottom, var(--kelp), var(--moss)); transition:height .15s ease-out; z-index:1; }
+  .vine-progress::after { content:""; position:absolute; bottom:-3px; left:-3px; width:7px; height:7px; border-radius:50%; background:var(--moss); }
+  [data-theme="dark"] .vine-progress { background:linear-gradient(to bottom, var(--moss), var(--glow)); }
+  [data-theme="dark"] .vine-progress::after { background:var(--glow); box-shadow:0 0 8px var(--glow); }
+  @media (min-width:1100px) { .vine { display:block; } }
+  @media (prefers-reduced-motion: reduce) { .vine-progress { transition:none; } }
+
+  /* Back to top */
+  .back-top {
+    position:fixed; bottom:2rem; right:2rem; z-index:70;
+    width:38px; height:38px;
+    background:var(--ink); color:var(--bg);
+    border:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:center;
+    font-size:.85rem; cursor:pointer;
+    opacity:0; pointer-events:none;
+    transition: opacity .3s ease, background .2s;
+  }
+  .back-top.visible { opacity:1; pointer-events:all; }
+  .back-top:hover { background:var(--moss); border-color:var(--moss); }
+
+  html { scroll-behavior:smooth; }
+  [id] { scroll-margin-top:90px; } /* keep anchored sections clear of the sticky header */
+  .reveal { opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in-view { opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    .reveal { opacity:1; transform:none; transition:none; }
+  }
+</style>
+</head>
+<body class="min-h-screen relative">
+
+<div class="vine" aria-hidden="true"><div class="vine-progress" id="vineProgress"></div></div>
+
+<header class="site-header relative max-w-5xl mx-auto px-6 pt-8 pb-2 flex items-center justify-between">
+  <a class="brand text-base tracking-[.18em] flex items-center gap-2" href="/"><img src="/gaia-icon.png" alt="Gaia" style="width:28px;height:28px;object-fit:contain;" />GAIA</a>
+  <nav class="hidden md:flex items-center gap-9 text-[13px] muted">
+    {active === 'home'
+      ? <a href="/" class="font-semibold" style="color:var(--moss);">Home</a>
+      : <a href="/" class="hover:text-[color:var(--ink)]">Home</a>}
+    {active === 'why-gaia'
+      ? <a href="/why-gaia/" class="font-semibold" style="color:var(--moss);">Why</a>
+      : <a href="/why-gaia/" class="hover:text-[color:var(--ink)]">Why</a>}
+    <a href="https://github.com/sho0pi/gaia#readme" target="_blank" class="hover:text-[color:var(--ink)]">Docs</a>
+    <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
+    <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-1.5 hover:text-[color:var(--ink)]">
+      <Icon name="lucide:github" width="14" height="14" aria-hidden="true" />
+      GitHub
+    </a>
+  </nav>
+  <button id="hamburger" class="hamburger md:hidden" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button id="themeBtn" class="theme-toggle" aria-label="Toggle theme">
+    <Icon name="lucide:sun" class="ti-sun" width="14" height="14" aria-hidden="true" />
+    <Icon name="lucide:moon" class="ti-moon" width="14" height="14" aria-hidden="true" />
+    <span class="ti-label-light">Light</span>
+    <span class="ti-label-dark">Dark</span>
+  </button>
+</header>
+
+<nav id="mobileNav" class="mobile-nav relative z-20 max-w-5xl mx-auto px-6">
+  <a href="/">Home</a>
+  <a href="/why-gaia/">Why</a>
+  <a href="https://github.com/sho0pi/gaia#readme" target="_blank">Docs</a>
+  <a href="/#contact">Contact</a>
+  <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-2">
+    <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
+    GitHub
+  </a>
+</nav>
+
+<slot />
+
+<hr class="hr-script max-w-5xl mx-auto" />
+
+<footer class="relative z-10 max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs muted">
+  <div class="flex items-center gap-3">
+    <span class="brand text-[11px] tracking-[.22em]">GAIA</span>
+    <span>© MMXXVI · MIT</span>
+  </div>
+  <div class="mono">Γαῖα · μήτηρ πάντων (mother of all)</div>
+</footer>
+
+<button id="backTop" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script is:inline>
+  // Theme toggle — sun/moon swap is pure CSS (keyed on [data-theme]); JS only flips state.
+  document.getElementById('themeBtn').onclick = function() {
+    var html = document.documentElement;
+    var next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    localStorage.setItem('gaia-theme', next);
+  };
+
+  // Hamburger
+  document.getElementById('hamburger').onclick = function() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  };
+
+  // Close mobile nav when a link inside it is tapped.
+  // Smooth scroll + header offset handled natively by CSS (scroll-behavior + scroll-margin-top).
+  document.getElementById('mobileNav').addEventListener('click', function(e) {
+    if (e.target.closest('a')) this.classList.remove('open');
+  });
+
+  // Back to top + vine scroll progress
+  var backTop = document.getElementById('backTop');
+  var vineProgress = document.getElementById('vineProgress');
+  function onScroll() {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    vineProgress.style.height = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // Section reveal
+  var revealItems = Array.prototype.slice.call(document.querySelectorAll('main, section, footer'));
+  revealItems.forEach(function(el) { el.classList.add('reveal'); });
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealItems.forEach(function(el) { revealObserver.observe(el); });
+  } else {
+    revealItems.forEach(function(el) { el.classList.add('in-view'); });
+  }
+</script>
+
+</body>
+</html>

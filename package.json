@@ -1,0 +1,20 @@
+{
+  "name": "gaia-v6",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/tailwind": "^5.1.4",
+    "@iconify-json/lucide": "^1.2.111",
+    "astro": "^5.1.1",
+    "astro-icon": "^1.1.5",
+    "astro-og-canvas": "^0.11.1",
+    "astro-seo": "^1.1.0",
+    "tailwindcss": "^3.4.17"
+  }
+}
