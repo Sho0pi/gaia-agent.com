@@ -86,15 +86,26 @@ import { Icon } from 'astro-icon/components';
   .forge-pulse {
     width:44px; height:44px; border:1px solid var(--moss); border-radius:50%;
     display:flex; align-items:center; justify-content:center; position:relative;
+    background:color-mix(in srgb, var(--surface) 82%, transparent);
+    box-shadow:0 0 18px color-mix(in srgb, var(--moss) 18%, transparent);
   }
   .forge-pulse::before, .forge-pulse::after {
     content:""; position:absolute; inset:-8px; border:1px solid var(--moss); border-radius:50%;
     opacity:.45; animation:forge-ring 2.2s ease-out infinite;
   }
   .forge-pulse::after { animation-delay:.75s; }
+  .forge-pulse img {
+    width:28px; height:28px; object-fit:contain; position:relative; z-index:1;
+    filter:drop-shadow(0 0 8px color-mix(in srgb, var(--moss) 46%, transparent));
+    animation:forge-icon-pulse 2.2s ease-in-out infinite;
+  }
   @keyframes forge-ring {
     0% { transform:scale(.72); opacity:.6; }
     100% { transform:scale(1.45); opacity:0; }
+  }
+  @keyframes forge-icon-pulse {
+    0%, 100% { transform:scale(.94); opacity:.86; }
+    50% { transform:scale(1.06); opacity:1; }
   }
   .agent-card {
     margin-top:1rem; border:1px solid color-mix(in srgb, var(--moss) 72%, var(--rule));
@@ -131,6 +142,7 @@ import { Icon } from 'astro-icon/components';
   }
   @media (prefers-reduced-motion: reduce) {
     .forge-pulse::before, .forge-pulse::after { animation:none; opacity:.2; }
+    .forge-pulse img { animation:none; }
     .request-card, .agent-card { animation:none; }
     .request-card, .agent-card, .forge-step { transition:none; }
   }
@@ -347,7 +359,7 @@ import { Icon } from 'astro-icon/components';
       </div>
     </div>
     <div class="forge-bridge" aria-hidden="true">
-      <div class="forge-pulse">Γ</div>
+      <div class="forge-pulse"><img src="/gaia-icon.png" alt="" loading="lazy" /></div>
     </div>
     <div class="forge-panel">
       <div class="forge-kicker">gaia forges</div>
