@@ -2,9 +2,8 @@
 
 ## 🔴 Before going live (blockers)
 
-- [ ] Replace `https://gaia-agent.com/install.sh` with the real install command once repo is public
-- [ ] Point `gaia-agent.com` domain to the server + set up SSL (Let's Encrypt)
-- [ ] Make GitHub repo public → `github.com/sho0pi/gaia`
+- [ ] Replace `https://gaia-agent.com/install.sh` with the real install command for `github.com/Sho0pi/gaia`
+- [ ] Enable HTTPS once GitHub Pages certificate finishes provisioning
 
 ## 🟡 Content (needs Itay to provide)
 
@@ -17,12 +16,8 @@
 
 ## 🟠 Nice to have (can build now)
 
-- [ ] **Scroll animations** — fade/slide sections in as user scrolls (Intersection Observer, no library needed)
 - [ ] **"Built with" / tech stack section** — brief mention of what Gaia is built on (Python? Node? LangChain?)
 - [ ] **Changelog page** — `/changelog` showing version history. Shows the project is alive. Even just v0.1 entry
-- [ ] **Star count badge** — live GitHub star counter in the hero once repo is public (fetch from GitHub API)
-- [ ] **Smooth scroll** — clicking nav links should smooth-scroll to sections (CSS `scroll-behavior: smooth`)
-- [ ] **Back to top button** — appears after scrolling down
 
 ## 🟢 Polish
 
@@ -56,3 +51,11 @@
 - [x] "it" instead of "she" throughout
 - [x] Domain placeholders set to gaia-agent.com
 - [x] Deployed at love.altshuler.xyz/gaia/v6/
+- [x] Make GitHub repo public → `github.com/Sho0pi/gaia`
+- [x] Deploy site to GitHub Pages from `master` via GitHub Actions
+- [x] Point `gaia-agent.com` DNS to GitHub Pages
+- [x] Add `public/CNAME` for `gaia-agent.com`
+- [x] Scroll animations — fade/slide sections in as user scrolls
+- [x] Star count badge — live GitHub star counter in the hero
+- [x] Smooth scroll — clicking nav links smooth-scrolls to sections
+- [x] Back to top button — appears after scrolling down
