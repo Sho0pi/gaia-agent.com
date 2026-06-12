@@ -37,6 +37,31 @@ import Layout from '../layouts/Layout.astro';
   /* Pull quote */
   .pullquote { border-left:3px solid var(--moss); padding:.75rem 0 .75rem 1.5rem; font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--ink-soft); line-height:1.6; }
   .pullquote cite { display:block; font-style:normal; font-size:.75rem; letter-spacing:.1em; margin-top:.5rem; font-family:'JetBrains Mono',monospace; color:var(--kelp); }
+
+  /* Lifecycle flow */
+  .life-flow { display:grid; gap:.75rem; }
+  .life-row {
+    display:grid; grid-template-columns:1fr; gap:.75rem;
+    border:1px solid var(--rule); background:var(--surface); padding:1rem;
+  }
+  @media (min-width:820px) { .life-row { grid-template-columns:9rem 1fr; align-items:start; } }
+  .life-who {
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--kelp);
+  }
+  .life-text { color:var(--ink); line-height:1.65; }
+  .life-text strong { color:var(--moss); font-weight:600; }
+  .life-muted { color:var(--ink-soft); font-size:.9rem; }
+  .life-split { display:grid; grid-template-columns:1fr; gap:.75rem; }
+  @media (min-width:820px) { .life-split { grid-template-columns:1fr 1fr; } }
+  .life-mini {
+    border:1px solid color-mix(in srgb, var(--rule) 85%, transparent);
+    background:var(--bg); padding:.9rem;
+  }
+  .life-arrow {
+    font-family:'Cinzel',serif; color:var(--moss); text-align:center;
+    letter-spacing:.24em; font-size:.68rem; padding:.3rem 0;
+  }
 </style>
 
 <main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32">
@@ -101,6 +126,59 @@ import Layout from '../layouts/Layout.astro';
       <cite>Composio · OpenClaw vs Hermes Agent · 2026</cite>
     </blockquote>
     <p class="muted text-sm mt-4 leading-relaxed max-w-2xl">And Gaia for the problem you haven't even defined yet. The soul smith doesn't wait around for you to design the system. It builds it as the work shows up.</p>
+  </div>
+
+  <hr class="hr-script mt-16 mb-16" />
+
+  <!-- Lifecycle flow -->
+  <p class="eyebrow mb-8">Example lifecycle</p>
+  <h2 class="display text-3xl md:text-4xl tracking-tight max-w-2xl">How Gaia grows around a task.</h2>
+  <p class="muted text-[15px] mt-4 max-w-2xl leading-relaxed">
+    The important part is not one perfect answer. It is the way Gaia creates, reuses, and coordinates specialists as the work changes.
+  </p>
+
+  <div class="life-flow mt-10">
+    <div class="life-row">
+      <div class="life-who">user</div>
+      <div class="life-text">“Create a detailed A/B gym plan for me.”</div>
+    </div>
+    <div class="life-arrow">↓</div>
+    <div class="life-row">
+      <div class="life-who">gaia</div>
+      <div class="life-text">Detects a fitness-programming task, checks the soul registry, finds no matching specialist, then forges <strong>professional_pt</strong>.</div>
+    </div>
+    <div class="life-arrow">↓</div>
+    <div class="life-row">
+      <div class="life-who">professional_pt</div>
+      <div class="life-text">Builds the A/B training plan and returns it to the user.</div>
+    </div>
+
+    <div class="life-row mt-6">
+      <div class="life-who">user</div>
+      <div class="life-text">“Thanks. I do not use dumbbells. Can you adjust it? Also create a static site where I can track my improvement.”</div>
+    </div>
+    <div class="life-arrow">↓</div>
+    <div class="life-row">
+      <div class="life-who">gaia</div>
+      <div>
+        <p class="life-text">Splits the new request into two jobs: update the training plan and build a progress tracker.</p>
+        <div class="life-split mt-4">
+          <div class="life-mini">
+            <div class="life-who">reuse</div>
+            <p class="life-muted mt-2"><strong style="color:var(--moss);">professional_pt</strong> already exists, so Gaia sends it the plan adjustment.</p>
+          </div>
+          <div class="life-mini">
+            <div class="life-who">forge</div>
+            <p class="life-muted mt-2">No frontend specialist exists, so Gaia creates <strong style="color:var(--moss);">frontend_dev</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="life-arrow">↓</div>
+    <div class="life-row">
+      <div class="life-who">result</div>
+      <div class="life-text"><strong>professional_pt</strong> adjusts the routine, Gaia passes the content to <strong>frontend_dev</strong>, and the finished tracker is returned to the user.</div>
+    </div>
   </div>
 
   <hr class="hr-script mt-16 mb-16" />
