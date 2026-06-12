@@ -71,6 +71,7 @@ import { Icon } from 'astro-icon/components';
     margin-top:1rem; min-height:118px; border:1px solid color-mix(in srgb, var(--rule) 78%, transparent);
     background:var(--bg); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;
     transition:opacity .28s ease, transform .28s ease, border-color .28s ease;
+    animation:forge-card-breathe 3.4s ease-in-out infinite;
   }
   .request-card.is-switching { opacity:.28; transform:translateY(8px); }
   .request-text {
@@ -99,6 +100,7 @@ import { Icon } from 'astro-icon/components';
     margin-top:1rem; border:1px solid color-mix(in srgb, var(--moss) 72%, var(--rule));
     background:color-mix(in srgb, var(--moss) 6%, var(--surface)); padding:1rem;
     min-height:178px; transition:opacity .28s ease, transform .28s ease;
+    animation:forge-card-breathe 3.4s ease-in-out infinite .25s;
   }
   .agent-card.is-switching { opacity:.3; transform:translateY(8px); }
   .agent-role {
@@ -123,8 +125,13 @@ import { Icon } from 'astro-icon/components';
     transition:opacity .2s ease, color .2s ease, border-color .2s ease;
   }
   .forge-step.active { opacity:1; color:var(--moss); border-color:var(--moss); }
+  @keyframes forge-card-breathe {
+    0%, 100% { border-color:color-mix(in srgb, var(--rule) 78%, transparent); }
+    50% { border-color:color-mix(in srgb, var(--moss) 78%, var(--rule)); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .forge-pulse::before, .forge-pulse::after { animation:none; opacity:.2; }
+    .request-card, .agent-card { animation:none; }
     .request-card, .agent-card, .forge-step { transition:none; }
   }
 
@@ -696,7 +703,7 @@ import { Icon } from 'astro-icon/components';
         agentTools.appendChild(tag);
       });
     }
-    setInterval(function () {
+    function cycleForge() {
       i = (i + 1) % examples.length;
       requestCard.classList.add('is-switching');
       agentCard.classList.add('is-switching');
@@ -708,7 +715,9 @@ import { Icon } from 'astro-icon/components';
         requestCard.classList.remove('is-switching');
         agentCard.classList.remove('is-switching');
       }, 720);
-    }, 3800);
+    }
+    setTimeout(cycleForge, 900);
+    setInterval(cycleForge, 3200);
   })();
 
   // Verb cycle — no reduced-motion guard, always runs
