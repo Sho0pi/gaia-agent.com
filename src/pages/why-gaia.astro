@@ -196,18 +196,13 @@ import { Icon } from 'astro-icon/components';
         return;
       }
       function play() {
-        rows.forEach(function (row) { row.classList.remove('visible'); });
-        rows.forEach(function (row, i) {
-          setTimeout(function () { row.classList.add('visible'); }, i * 1200);
-        });
+        rows.forEach(function (row) { row.classList.add('visible'); });
         setTimeout(function () {
-          rows.forEach(function (row, i) {
-            setTimeout(function () { row.classList.remove('visible'); }, i * 320);
-          });
-        }, rows.length * 1200 + 5000);
+          rows.forEach(function (row) { row.classList.remove('visible'); });
+        }, 6500);
       }
       play();
-      setInterval(play, rows.length * 1200 + 8500);
+      setInterval(play, 8500);
     })();
   </script>
 
