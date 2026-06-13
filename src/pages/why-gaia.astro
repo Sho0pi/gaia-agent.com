@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Icon } from 'astro-icon/components';
 ---
 <Layout
   title="Why Gaia · agents that build agents"
@@ -39,41 +38,6 @@ import { Icon } from 'astro-icon/components';
   .pullquote { border-left:3px solid var(--moss); padding:.75rem 0 .75rem 1.5rem; font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--ink-soft); line-height:1.6; }
   .pullquote cite { display:block; font-style:normal; font-size:.75rem; letter-spacing:.1em; margin-top:.5rem; font-family:'JetBrains Mono',monospace; color:var(--kelp); }
 
-  /* Lifecycle flow */
-  .life-who {
-    font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--kelp);
-  }
-  .chat-demo {
-    border:1px solid var(--rule); background:var(--surface); padding:1rem;
-    display:grid; gap:.9rem; position:relative; overflow:hidden;
-  }
-  .chat-row {
-    display:grid; grid-template-columns:1fr; gap:.55rem;
-    opacity:0; transform:translateY(10px);
-    transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
-  }
-  .chat-row.visible { opacity:1; transform:none; }
-  .chat-line {
-    max-width:760px; border:1px solid var(--rule); background:var(--bg);
-    padding:.8rem .95rem; line-height:1.55; color:var(--ink);
-  }
-  .chat-line.user { margin-left:auto; background:color-mix(in srgb, var(--moss) 7%, var(--surface)); }
-  .chat-line.gaia { margin-right:auto; }
-  .chat-trace {
-    margin-left:1.2rem; padding-left:.8rem; border-left:1px solid color-mix(in srgb, var(--moss) 50%, transparent);
-    color:color-mix(in srgb, var(--ink-soft) 68%, transparent);
-    font-family:'JetBrains Mono',monospace; font-size:.72rem; line-height:1.55;
-    display:flex; align-items:flex-start; gap:.5rem;
-  }
-  .chat-trace strong { color:color-mix(in srgb, var(--moss) 74%, transparent); font-weight:500; }
-  .trace-icon {
-    width:1rem; height:1rem; margin-top:.13rem; flex:0 0 auto;
-    color:color-mix(in srgb, var(--moss) 78%, transparent);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .chat-row { opacity:1; transform:none; transition:none; }
-  }
 </style>
 
 <main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32">
@@ -142,72 +106,15 @@ import { Icon } from 'astro-icon/components';
 
   <hr class="hr-script mt-16 mb-16" />
 
-  <!-- Lifecycle flow -->
-  <p class="eyebrow mb-8">Example lifecycle</p>
-  <h2 class="display text-3xl md:text-4xl tracking-tight max-w-2xl">How Gaia grows around a task.</h2>
-  <p class="muted text-[15px] mt-4 max-w-2xl leading-relaxed">
-    The important part is not one perfect answer. It is the way Gaia creates, reuses, and coordinates specialists as the work changes.
-  </p>
-
-  <div class="chat-demo mt-10" aria-label="Gaia lifecycle chat demo">
-    <div class="chat-row">
-      <div class="chat-line user">Create a detailed A/B gym plan for me.</div>
-    </div>
-    <div class="chat-row">
-      <div class="chat-line gaia">Got it. I’ll build a structured A/B routine around your goals, recovery, and progression.</div>
-      <div class="chat-trace">
-        <Icon name="lucide:hammer" class="trace-icon" aria-hidden="true" />
-        <span>internal: no trainer soul found -> forge <strong>professional_pt</strong></span>
-      </div>
-    </div>
-    <div class="chat-row">
-      <div class="chat-line gaia">Here’s your A/B plan: two alternating training days, weekly progression, rest guidance, and substitution rules.</div>
-      <div class="chat-trace">
-        <Icon name="lucide:arrow-left-right" class="trace-icon" aria-hidden="true" />
-        <span>internal: <strong>professional_pt</strong> returns plan to Gaia</span>
-      </div>
-    </div>
-    <div class="chat-row">
-      <div class="chat-line user">Thanks. I do not use dumbbells. Can you adjust it? Also create a static site where I can track my improvement.</div>
-    </div>
-    <div class="chat-row">
-      <div class="chat-line gaia">Yes. I’ll update the routine and build a lightweight tracker around the final plan.</div>
-      <div class="chat-trace">
-        <Icon name="lucide:refresh-cw" class="trace-icon" aria-hidden="true" />
-        <span>internal: reuse <strong>professional_pt</strong> + forge <strong>frontend_dev</strong></span>
-      </div>
-    </div>
-    <div class="chat-row">
-      <div class="chat-line gaia">I removed dumbbell movements, kept the progression intact, and created a static tracker for workouts, notes, and improvements.</div>
-      <div class="chat-trace">
-        <Icon name="lucide:workflow" class="trace-icon" aria-hidden="true" />
-        <span>internal: Gaia coordinates both souls; user only sees one conversation</span>
-      </div>
-    </div>
+  <!-- How it works CTA -->
+  <div class="border border-[color:var(--rule)] bg-[color:var(--surface)] p-8 md:p-10">
+    <p class="eyebrow mb-4">How it works</p>
+    <h2 class="display text-3xl md:text-4xl tracking-tight max-w-2xl">See the soul lifecycle in motion.</h2>
+    <p class="muted text-[15px] mt-4 max-w-2xl leading-relaxed">
+      Watch Gaia forge a specialist, reuse it when the task changes, and coordinate multiple souls while the user sees one conversation.
+    </p>
+    <a href="/how-it-works/" class="btn btn-primary mt-6">Open the lifecycle →</a>
   </div>
-
-  <script is:inline>
-    (function () {
-      var rows = Array.prototype.slice.call(document.querySelectorAll('.chat-demo .chat-row'));
-      if (!rows.length) return;
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) {
-        rows.forEach(function (row) { row.classList.add('visible'); });
-        return;
-      }
-      function play() {
-        rows.forEach(function (row) { row.classList.remove('visible'); });
-        rows.forEach(function (row, i) {
-          setTimeout(function () { row.classList.add('visible'); }, i * 1200);
-        });
-        setTimeout(function () {
-          rows.forEach(function (row) { row.classList.remove('visible'); });
-        }, rows.length * 1200 + 5000);
-      }
-      play();
-      setInterval(play, rows.length * 1200 + 8500);
-    })();
-  </script>
 
   <hr class="hr-script mt-16 mb-16" />
 
