@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 <Layout
   title="Why Gaia · agents that build agents"
@@ -47,14 +48,12 @@ import Layout from '../layouts/Layout.astro';
     border:1px solid var(--rule); background:var(--surface); padding:1rem;
     display:grid; gap:.9rem; position:relative; overflow:hidden;
   }
-  .chat-row { display:grid; grid-template-columns:1fr; gap:.55rem; opacity:0; transform:translateY(10px); animation:chat-in 22s linear infinite; }
-  .chat-row:nth-child(1) { animation-delay:0s; }
-  .chat-row:nth-child(2) { animation-delay:2.5s; }
-  .chat-row:nth-child(3) { animation-delay:5s; }
-  .chat-row:nth-child(4) { animation-delay:7.5s; }
-  .chat-row:nth-child(5) { animation-delay:10s; }
-  .chat-row:nth-child(6) { animation-delay:12.5s; }
-  .chat-row:nth-child(7) { animation-delay:15s; }
+  .chat-row {
+    display:grid; grid-template-columns:1fr; gap:.55rem;
+    opacity:0; transform:translateY(10px);
+    transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .chat-row.visible { opacity:1; transform:none; }
   .chat-line {
     max-width:760px; border:1px solid var(--rule); background:var(--bg);
     padding:.8rem .95rem; line-height:1.55; color:var(--ink);
@@ -65,15 +64,15 @@ import Layout from '../layouts/Layout.astro';
     margin-left:1.2rem; padding-left:.8rem; border-left:1px solid color-mix(in srgb, var(--moss) 50%, transparent);
     color:color-mix(in srgb, var(--ink-soft) 68%, transparent);
     font-family:'JetBrains Mono',monospace; font-size:.72rem; line-height:1.55;
+    display:flex; align-items:flex-start; gap:.5rem;
   }
   .chat-trace strong { color:color-mix(in srgb, var(--moss) 74%, transparent); font-weight:500; }
-  @keyframes chat-in {
-    0%, 6% { opacity:0; transform:translateY(10px); }
-    10%, 92% { opacity:1; transform:none; }
-    96%, 100% { opacity:0; transform:translateY(-4px); }
+  .trace-icon {
+    width:1rem; height:1rem; margin-top:.13rem; flex:0 0 auto;
+    color:color-mix(in srgb, var(--moss) 78%, transparent);
   }
   @media (prefers-reduced-motion: reduce) {
-    .chat-row { opacity:1; transform:none; animation:none; }
+    .chat-row { opacity:1; transform:none; transition:none; }
   }
 </style>
 
@@ -156,24 +155,61 @@ import Layout from '../layouts/Layout.astro';
     </div>
     <div class="chat-row">
       <div class="chat-line gaia">Got it. I’ll build a structured A/B routine around your goals, recovery, and progression.</div>
-      <div class="chat-trace">internal: no trainer soul found -> forge <strong>professional_pt</strong></div>
+      <div class="chat-trace">
+        <Icon name="lucide:hammer" class="trace-icon" aria-hidden="true" />
+        <span>internal: no trainer soul found -> forge <strong>professional_pt</strong></span>
+      </div>
     </div>
     <div class="chat-row">
       <div class="chat-line gaia">Here’s your A/B plan: two alternating training days, weekly progression, rest guidance, and substitution rules.</div>
-      <div class="chat-trace">internal: <strong>professional_pt</strong> returns plan to Gaia</div>
+      <div class="chat-trace">
+        <Icon name="lucide:arrow-left-right" class="trace-icon" aria-hidden="true" />
+        <span>internal: <strong>professional_pt</strong> returns plan to Gaia</span>
+      </div>
     </div>
     <div class="chat-row">
       <div class="chat-line user">Thanks. I do not use dumbbells. Can you adjust it? Also create a static site where I can track my improvement.</div>
     </div>
     <div class="chat-row">
       <div class="chat-line gaia">Yes. I’ll update the routine and build a lightweight tracker around the final plan.</div>
-      <div class="chat-trace">internal: reuse <strong>professional_pt</strong> + forge <strong>frontend_dev</strong></div>
+      <div class="chat-trace">
+        <Icon name="lucide:refresh-cw" class="trace-icon" aria-hidden="true" />
+        <span>internal: reuse <strong>professional_pt</strong> + forge <strong>frontend_dev</strong></span>
+      </div>
     </div>
     <div class="chat-row">
       <div class="chat-line gaia">I removed dumbbell movements, kept the progression intact, and created a static tracker for workouts, notes, and improvements.</div>
-      <div class="chat-trace">internal: Gaia coordinates both souls; user only sees one conversation</div>
+      <div class="chat-trace">
+        <Icon name="lucide:workflow" class="trace-icon" aria-hidden="true" />
+        <span>internal: Gaia coordinates both souls; user only sees one conversation</span>
+      </div>
     </div>
   </div>
+
+  <script is:inline>
+    (function () {
+      var rows = Array.prototype.slice.call(document.querySelectorAll('.chat-demo .chat-row'));
+      if (!rows.length) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) {
+        rows.forEach(function (row) { row.classList.add('visible'); });
+        return;
+      }
+      function play() {
+        rows.forEach(function (row) { row.classList.remove('visible'); });
+        rows.forEach(function (row, i) {
+          setTimeout(function () { row.classList.add('visible'); }, i * 1200);
+        });
+        setTimeout(function () {
+          rows.forEach(function (row, i) {
+            setTimeout(function () { row.classList.remove('visible'); }, i * 320);
+          });
+        }, rows.length * 1200 + 5000);
+      }
+      play();
+      setInterval(play, rows.length * 1200 + 8500);
+    })();
+  </script>
 
   <hr class="hr-script mt-16 mb-16" />
 
