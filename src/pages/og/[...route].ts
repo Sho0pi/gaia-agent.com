@@ -12,6 +12,11 @@ const pages = {
     description:
       'OpenClaw orchestrates. Hermes iterates. Gaia creates. The soul-smith pattern is a different category.',
   },
+  'how-it-works': {
+    title: 'How Gaia Works',
+    description:
+      'See Gaia forge, reuse, and coordinate specialist souls as a task changes.',
+  },
 };
 
 export const { getStaticPaths, GET } = await OGImageRoute({

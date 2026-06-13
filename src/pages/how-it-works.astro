@@ -1,0 +1,139 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+---
+<Layout
+  title="How Gaia Works · lifecycle of a soul"
+  description="See how Gaia creates, reuses, and coordinates specialist souls as a task changes."
+  active="how-it-works"
+>
+
+<style is:global>
+  .chat-demo {
+    border:1px solid var(--rule); background:var(--surface); padding:1rem;
+    display:grid; gap:.9rem; position:relative; overflow:hidden;
+  }
+  .chat-row {
+    display:grid; grid-template-columns:1fr; gap:.55rem;
+    opacity:0; transform:translateY(10px);
+    transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .chat-row.visible { opacity:1; transform:none; }
+  .chat-line {
+    max-width:760px; border:1px solid var(--rule); background:var(--bg);
+    padding:.8rem .95rem; line-height:1.55; color:var(--ink);
+  }
+  .chat-line.user { margin-left:auto; background:color-mix(in srgb, var(--moss) 7%, var(--surface)); }
+  .chat-line.gaia { margin-right:auto; }
+  .chat-trace {
+    margin-left:1.2rem; padding-left:.8rem; border-left:1px solid color-mix(in srgb, var(--moss) 50%, transparent);
+    color:color-mix(in srgb, var(--ink-soft) 68%, transparent);
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; line-height:1.55;
+    display:flex; align-items:flex-start; gap:.5rem;
+  }
+  .chat-trace strong { color:color-mix(in srgb, var(--moss) 74%, transparent); font-weight:500; }
+  .trace-icon {
+    width:1rem; height:1rem; margin-top:.13rem; flex:0 0 auto;
+    color:color-mix(in srgb, var(--moss) 78%, transparent);
+  }
+  .step-card { border:1px solid var(--rule); background:var(--surface); padding:1.35rem; }
+  .step-num { font-family:'Cinzel',serif; color:var(--moss); font-size:.7rem; letter-spacing:.22em; }
+  @media (prefers-reduced-motion: reduce) {
+    .chat-row { opacity:1; transform:none; transition:none; }
+  }
+</style>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32">
+  <p class="eyebrow">How it works</p>
+  <h1 class="display mt-4 text-5xl md:text-6xl leading-[1.02] tracking-tight max-w-3xl">
+    Gaia grows around the work.
+  </h1>
+  <p class="muted text-[16px] mt-6 max-w-2xl leading-relaxed">
+    The important part is not one perfect answer. It is the loop: Gaia understands the task, forges or reuses specialist souls, coordinates their outputs, and remembers what worked for the next request.
+  </p>
+
+  <hr class="hr-script mt-16 mb-16" />
+
+  <div class="grid md:grid-cols-3 gap-4 mb-14">
+    <div class="step-card">
+      <div class="step-num">I · Recognize</div>
+      <h2 class="display text-xl mt-3 font-semibold">Spot the shape</h2>
+      <p class="muted text-sm mt-3 leading-relaxed">Gaia breaks a messy prompt into the kinds of expertise it needs.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">II · Forge</div>
+      <h2 class="display text-xl mt-3 font-semibold">Create or reuse souls</h2>
+      <p class="muted text-sm mt-3 leading-relaxed">If the right specialist exists, Gaia calls it. If not, Gaia creates one.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">III · Return</div>
+      <h2 class="display text-xl mt-3 font-semibold">One conversation</h2>
+      <p class="muted text-sm mt-3 leading-relaxed">The user sees a single thread while Gaia coordinates the soul network behind it.</p>
+    </div>
+  </div>
+
+  <p class="eyebrow mb-8">Example lifecycle</p>
+  <h2 class="display text-3xl md:text-4xl tracking-tight max-w-2xl">A task changes. Gaia adapts.</h2>
+
+  <div class="chat-demo mt-10" aria-label="Gaia lifecycle chat demo">
+    <div class="chat-row">
+      <div class="chat-line user">Create a detailed A/B gym plan for me.</div>
+    </div>
+    <div class="chat-row">
+      <div class="chat-line gaia">Got it. I’ll build a structured A/B routine around your goals, recovery, and progression.</div>
+      <div class="chat-trace">
+        <Icon name="lucide:hammer" class="trace-icon" aria-hidden="true" />
+        <span>internal: no trainer soul found -> forge <strong>professional_pt</strong></span>
+      </div>
+    </div>
+    <div class="chat-row">
+      <div class="chat-line gaia">Here’s your A/B plan: two alternating training days, weekly progression, rest guidance, and substitution rules.</div>
+      <div class="chat-trace">
+        <Icon name="lucide:arrow-left-right" class="trace-icon" aria-hidden="true" />
+        <span>internal: <strong>professional_pt</strong> returns plan to Gaia</span>
+      </div>
+    </div>
+    <div class="chat-row">
+      <div class="chat-line user">Thanks. I do not use dumbbells. Can you adjust it? Also create a static site where I can track my improvement.</div>
+    </div>
+    <div class="chat-row">
+      <div class="chat-line gaia">Yes. I’ll update the routine and build a lightweight tracker around the final plan.</div>
+      <div class="chat-trace">
+        <Icon name="lucide:refresh-cw" class="trace-icon" aria-hidden="true" />
+        <span>internal: reuse <strong>professional_pt</strong> + forge <strong>frontend_dev</strong></span>
+      </div>
+    </div>
+    <div class="chat-row">
+      <div class="chat-line gaia">I removed dumbbell movements, kept the progression intact, and created a static tracker for workouts, notes, and improvements.</div>
+      <div class="chat-trace">
+        <Icon name="lucide:workflow" class="trace-icon" aria-hidden="true" />
+        <span>internal: Gaia coordinates both souls; user only sees one conversation</span>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var rows = Array.prototype.slice.call(document.querySelectorAll('.chat-demo .chat-row'));
+      if (!rows.length) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) {
+        rows.forEach(function (row) { row.classList.add('visible'); });
+        return;
+      }
+      function play() {
+        rows.forEach(function (row) { row.classList.remove('visible'); });
+        rows.forEach(function (row, i) {
+          setTimeout(function () { row.classList.add('visible'); }, i * 1200);
+        });
+        setTimeout(function () {
+          rows.forEach(function (row) { row.classList.remove('visible'); });
+        }, rows.length * 1200 + 5000);
+      }
+      play();
+      setInterval(play, rows.length * 1200 + 8500);
+    })();
+  </script>
+</main>
+
+</Layout>
