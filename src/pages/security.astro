@@ -1,0 +1,232 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+  title="Security & Privacy · Gaia"
+  description="How Gaia thinks about local execution, model providers, tool permissions, memory, connectors, and the hardening work required before a stable release."
+  active="security"
+>
+
+<style is:global>
+  .sec-grid { display:grid; grid-template-columns:1fr; gap:1rem; }
+  @media (min-width:820px) { .sec-grid { grid-template-columns:repeat(3,1fr); } }
+  .sec-card {
+    border:1px solid var(--rule); background:var(--surface); padding:1.35rem;
+  }
+  .sec-card.strong { border-color:var(--moss); background:color-mix(in srgb, var(--moss) 7%, var(--surface)); }
+  .sec-label {
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--kelp);
+  }
+  .sec-card h3 { font-family:'Fraunces',serif; font-size:1.28rem; line-height:1.2; margin-top:.7rem; }
+  .sec-card p, .sec-card li { color:var(--ink-soft); font-size:.9rem; line-height:1.72; }
+  .sec-card ul { margin-top:1rem; display:grid; gap:.45rem; }
+  .sec-card li::before { content:"-> "; color:var(--moss); font-family:'JetBrains Mono',monospace; }
+  .sec-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  .sec-table th {
+    font-family:'Cinzel',serif; font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-soft); text-align:left; border-bottom:2px solid var(--rule); padding:.8rem 1rem;
+  }
+  .sec-table td { border-bottom:1px solid var(--rule); padding:1rem; color:var(--ink-soft); vertical-align:top; line-height:1.6; }
+  .sec-table td:first-child { color:var(--ink); font-weight:600; }
+  .dep-grid { display:grid; grid-template-columns:1fr; gap:1rem; }
+  @media (min-width:820px) { .dep-grid { grid-template-columns:repeat(2,1fr); } }
+  .dep-card {
+    border:1px solid var(--rule); background:var(--surface); padding:1.2rem;
+  }
+  .dep-tags { margin-top:1rem; display:flex; flex-wrap:wrap; gap:.45rem; }
+  .dep-tags code {
+    border:1px solid color-mix(in srgb, var(--rule) 85%, transparent);
+    background:color-mix(in srgb, var(--bg) 72%, transparent);
+    padding:.28rem .5rem; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+    color:var(--ink-soft);
+  }
+  .check-list { display:grid; gap:.75rem; }
+  .check-item {
+    display:grid; grid-template-columns:auto 1fr; gap:.75rem; align-items:start;
+    border-top:1px solid var(--rule); padding-top:.8rem;
+  }
+  .check-mark {
+    width:1.35rem; height:1.35rem; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--moss); color:var(--moss); font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  }
+  .status-pill {
+    display:inline-flex; align-items:center; border:1px solid var(--rule);
+    padding:.28rem .55rem; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+    color:var(--ink-soft); background:color-mix(in srgb, var(--bg) 70%, transparent);
+  }
+</style>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-28">
+  <p class="eyebrow">Security &amp; Privacy</p>
+  <h1 class="display mt-4 text-5xl md:text-6xl leading-[1.02] tracking-tight max-w-3xl">
+    Powerful agents need boring guardrails.
+  </h1>
+  <p class="muted text-[16px] mt-6 max-w-2xl leading-relaxed">
+    Gaia is designed as a local-first, open-source agent system. It can use files, browsers, shells, memories, MCP tools, and messaging connectors, so security is not a footer detail. This page states the model plainly, including the parts still being hardened before a stable release.
+  </p>
+  <div class="mt-8 flex flex-wrap gap-2">
+    <span class="status-pill">open source</span>
+    <span class="status-pill">bring your own keys</span>
+    <span class="status-pill">local-first design</span>
+    <span class="status-pill">early project</span>
+  </div>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <p class="eyebrow mb-8">Operating model</p>
+    <div class="sec-grid">
+      <article class="sec-card strong">
+        <div class="sec-label">01</div>
+        <h3>Runs in your environment</h3>
+        <p class="mt-3">Gaia is not a hosted black box. The intended deployment is your machine or server, with your configuration, your model providers, and your connectors.</p>
+      </article>
+      <article class="sec-card">
+        <div class="sec-label">02</div>
+        <h3>Tools are real access</h3>
+        <p class="mt-3">Filesystem, browser, shell, MCP, and channel connectors can touch sensitive data. Gaia should be treated like software you give permissions to, not like a chat widget.</p>
+      </article>
+      <article class="sec-card">
+        <div class="sec-label">03</div>
+        <h3>Souls inherit limits</h3>
+        <p class="mt-3">The soul-smith model is powerful only if generated agents inherit clear tool scopes, model scopes, memory rules, and action boundaries.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <p class="eyebrow mb-8">Data flow</p>
+    <div class="overflow-x-auto">
+      <table class="sec-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Where it lives</th>
+            <th>What can leave</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Configuration</td>
+            <td>Local project/server config by design.</td>
+            <td>Only values you explicitly send to a provider, connector, or external tool.</td>
+          </tr>
+          <tr>
+            <td>Memory</td>
+            <td>Short-term and long-term memory are intended to be stored under your Gaia environment.</td>
+            <td>Relevant memory may be included in prompts to your chosen LLM provider when needed for a task.</td>
+          </tr>
+          <tr>
+            <td>Prompts and task context</td>
+            <td>Visible in your local session and logs, depending on your setup.</td>
+            <td>Sent to whichever model provider you configure for Gaia or a specific soul.</td>
+          </tr>
+          <tr>
+            <td>Connector messages</td>
+            <td>Handled through the connected channel, such as CLI, Telegram, WhatsApp, or Discord.</td>
+            <td>Channel providers receive the messages required to deliver that integration.</td>
+          </tr>
+          <tr>
+            <td>Tool outputs</td>
+            <td>Available to Gaia during the run and may be persisted if memory/logging is enabled.</td>
+            <td>May be passed back into an LLM call if the active task needs the result.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <p class="eyebrow mb-8">Important trust surfaces</p>
+    <div class="dep-grid">
+      <article class="dep-card">
+        <div class="sec-label">agent runtime</div>
+        <h3 class="display text-2xl mt-3">ADK runs the agent loop.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Google ADK is the runtime layer Gaia builds on for agent behavior. The security boundary here is simple: prompts, tool calls, and delegated soul work must stay observable and scoped.</p>
+        <div class="dep-tags">
+          <code>google-adk</code><code>a2a-sdk</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">memory</div>
+        <h3 class="display text-2xl mt-3">mem0 is long-term context.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Memory is where Gaia becomes personal. It also creates risk: users need to inspect, delete, export, and disable long-term memory when the remembered context is no longer wanted.</p>
+        <div class="dep-tags">
+          <code>mem0ai</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">channels</div>
+        <h3 class="display text-2xl mt-3">Connectors carry private messages.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Telegram, WhatsApp Cloud, and WhatsApp Web integrations are sensitive because they handle inbound messages, channel credentials, and outbound replies in your name.</p>
+        <div class="dep-tags">
+          <code>python-telegram-bot</code><code>pywa</code><code>neonize</code>
+        </div>
+      </article>
+      <article class="dep-card">
+        <div class="sec-label">browser tools</div>
+        <h3 class="display text-2xl mt-3">Browser access is real action.</h3>
+        <p class="muted text-sm mt-3 leading-relaxed">Browser automation through Playwright MCP lets Gaia inspect pages and operate web flows. It should be treated like a powerful tool with clear permissions, visible logs, and confirmation before sensitive submissions.</p>
+        <div class="dep-tags">
+          <code>playwright-mcp</code><code>MCP tools</code>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section class="grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-4">
+      <p class="eyebrow">Risk areas</p>
+      <h2 class="display text-3xl md:text-4xl mt-4 leading-tight tracking-tight">The sharp edges are named.</h2>
+      <p class="muted text-[14px] mt-4 leading-relaxed">Agent systems fail when they pretend broad permissions are harmless. Gaia should make those boundaries visible.</p>
+    </div>
+    <div class="md:col-span-8 sec-card">
+      <ul>
+        <li><strong style="color:var(--ink);">Tool access:</strong> shell, filesystem, browser, and MCP tools can perform real actions.</li>
+        <li><strong style="color:var(--ink);">Prompt injection:</strong> webpages, emails, files, and tool outputs can contain hostile instructions.</li>
+        <li><strong style="color:var(--ink);">Generated souls:</strong> newly created agents need scoped permissions instead of inheriting everything by default.</li>
+        <li><strong style="color:var(--ink);">Third-party skills:</strong> readable does not automatically mean safe. Skills and MCP servers need review before use.</li>
+        <li><strong style="color:var(--ink);">Messaging connectors:</strong> channels can expose private conversations if tokens, sessions, or web clients are misconfigured.</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section class="grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-4">
+      <p class="eyebrow">Hardening checklist</p>
+      <h2 class="display text-3xl md:text-4xl mt-4 leading-tight tracking-tight">Before stable release.</h2>
+    </div>
+    <div class="md:col-span-8 check-list">
+      <div class="check-item"><span class="check-mark">1</span><p class="muted">Permission profiles for tools, souls, and MCP servers.</p></div>
+      <div class="check-item"><span class="check-mark">2</span><p class="muted">Confirmation gates before destructive filesystem, shell, outbound messaging, or credential-touching actions.</p></div>
+      <div class="check-item"><span class="check-mark">3</span><p class="muted">Readable audit log showing who acted: Gaia, a named soul, or an external tool.</p></div>
+      <div class="check-item"><span class="check-mark">4</span><p class="muted">Memory controls: inspect, delete, export, and disable long-term memory.</p></div>
+      <div class="check-item"><span class="check-mark">5</span><p class="muted">Connector isolation so Telegram, WhatsApp, Discord, and CLI sessions do not silently share more than intended.</p></div>
+      <div class="check-item"><span class="check-mark">6</span><p class="muted">A security reporting path and documented threat model in the public repository.</p></div>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-12" />
+
+  <section>
+    <h2 class="display text-3xl md:text-4xl tracking-tight">Security reports</h2>
+    <p class="muted mt-4 max-w-2xl leading-relaxed">
+      Gaia is early. Until a dedicated security email is published, please report issues privately through the GitHub repository owner rather than posting exploitable details publicly.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-primary">Open GitHub ↗</a>
+      <a href="/" class="btn btn-ghost">Back home</a>
+    </div>
+  </section>
+</main>
+
+</Layout>

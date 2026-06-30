@@ -22,6 +22,11 @@ const pages = {
     description:
       'The channels, models, tools, and skills Gaia plugs into: Telegram, WhatsApp, Gemini, OpenAI, MCP, and the toolset every soul inherits.',
   },
+  security: {
+    title: 'Gaia Security & Privacy',
+    description:
+      'Local-first agents, real tool access, explicit data flow, and the hardening work before stable release.',
+  },
 };
 
 export const { getStaticPaths, GET } = await OGImageRoute({

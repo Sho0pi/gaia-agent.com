@@ -11,7 +11,7 @@ const { title, description, active = '' } = Astro.props;
 
 const site = 'https://gaia-agent.com';
 const path = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const ogSlug = path === 'why-gaia' || path === 'how-it-works' || path === 'integrations' ? path : 'index';
+const ogSlug = path === 'why-gaia' || path === 'how-it-works' || path === 'integrations' || path === 'security' ? path : 'index';
 const ogImage = `${site}/og/${ogSlug}.png`;
 const canonical = `${site}${Astro.url.pathname}`;
 ---
@@ -184,6 +184,9 @@ const canonical = `${site}${Astro.url.pathname}`;
     {active === 'integrations'
       ? <a href="/integrations/" class="font-semibold" style="color:var(--moss);">Integrations</a>
       : <a href="/integrations/" class="hover:text-[color:var(--ink)]">Integrations</a>}
+    {active === 'security'
+      ? <a href="/security/" class="font-semibold" style="color:var(--moss);">Security</a>
+      : <a href="/security/" class="hover:text-[color:var(--ink)]">Security</a>}
     <a href="https://github.com/sho0pi/gaia#readme" target="_blank" class="hover:text-[color:var(--ink)]">Docs</a>
     <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
     <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-1.5 hover:text-[color:var(--ink)]">
@@ -205,6 +208,7 @@ const canonical = `${site}${Astro.url.pathname}`;
   <a href="/how-it-works/">How</a>
   <a href="/why-gaia/">Why</a>
   <a href="/integrations/">Integrations</a>
+  <a href="/security/">Security</a>
   <a href="https://github.com/sho0pi/gaia#readme" target="_blank">Docs</a>
   <a href="/#contact">Contact</a>
   <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-2">
@@ -217,11 +221,16 @@ const canonical = `${site}${Astro.url.pathname}`;
 
 <hr class="hr-script max-w-5xl mx-auto" />
 
-<footer class="relative z-10 max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs muted">
+<footer class="relative z-10 max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs muted">
   <div class="flex items-center gap-3">
     <span class="brand text-[11px] tracking-[.22em]">GAIA</span>
     <span>© MMXXVI · MIT</span>
   </div>
+  <nav class="flex flex-wrap items-center justify-center gap-4">
+    <a href="/security/" class="hover:text-[color:var(--ink)]">Security</a>
+    <a href="https://github.com/sho0pi/gaia" target="_blank" class="hover:text-[color:var(--ink)]">GitHub</a>
+    <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
+  </nav>
   <div class="mono">Γαῖα · μήτηρ πάντων (mother of all)</div>
 </footer>
 

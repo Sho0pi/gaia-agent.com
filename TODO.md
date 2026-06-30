@@ -59,3 +59,4 @@
 - [x] Star count badge — live GitHub star counter in the hero
 - [x] Smooth scroll — clicking nav links smooth-scrolls to sections
 - [x] Back to top button — appears after scrolling down
+- [x] Security & privacy page with data flow, risk areas, and hardening checklist
