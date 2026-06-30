@@ -6,3 +6,6 @@ dist/
 !.env.example
 .DS_Store
 .godpy-logs/
+
+# Per-user Claude Code settings (machine-local; shared config lives in settings.json)
+.claude/settings.local.json
