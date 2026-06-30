@@ -126,7 +126,7 @@ import Layout from '../layouts/Layout.astro';
           </tr>
           <tr>
             <td>Connector messages</td>
-            <td>Handled through the connected channel, such as CLI, Telegram, WhatsApp, or Discord.</td>
+            <td>Handled through the connected channel: CLI, Telegram, or WhatsApp.</td>
             <td>Channel providers receive the messages required to deliver that integration.</td>
           </tr>
           <tr>
@@ -149,7 +149,7 @@ import Layout from '../layouts/Layout.astro';
         <h3 class="display text-2xl mt-3">ADK runs the agent loop.</h3>
         <p class="muted text-sm mt-3 leading-relaxed">Google ADK is the runtime layer Gaia builds on for agent behavior. The security boundary here is simple: prompts, tool calls, and delegated soul work must stay observable and scoped.</p>
         <div class="dep-tags">
-          <code>google-adk</code><code>a2a-sdk</code>
+          <code>google-adk</code>
         </div>
       </article>
       <article class="dep-card">
@@ -163,17 +163,17 @@ import Layout from '../layouts/Layout.astro';
       <article class="dep-card">
         <div class="sec-label">channels</div>
         <h3 class="display text-2xl mt-3">Connectors carry private messages.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">Telegram, WhatsApp Cloud, and WhatsApp Web integrations are sensitive because they handle inbound messages, channel credentials, and outbound replies in your name.</p>
+        <p class="muted text-sm mt-3 leading-relaxed">Telegram and WhatsApp integrations are sensitive because they handle inbound messages, channel credentials, and outbound replies in your name.</p>
         <div class="dep-tags">
-          <code>python-telegram-bot</code><code>pywa</code><code>neonize</code>
+          <code>python-telegram-bot</code><code>neonize</code>
         </div>
       </article>
       <article class="dep-card">
         <div class="sec-label">browser tools</div>
         <h3 class="display text-2xl mt-3">Browser access is real action.</h3>
-        <p class="muted text-sm mt-3 leading-relaxed">Browser automation through Playwright MCP lets Gaia inspect pages and operate web flows. It should be treated like a powerful tool with clear permissions, visible logs, and confirmation before sensitive submissions.</p>
+        <p class="muted text-sm mt-3 leading-relaxed">Browser automation lets Gaia inspect pages and operate web flows. The default backend is Camoufox; a Playwright MCP backend is opt-in. Either way it should be treated like a powerful tool with clear permissions, visible logs, and confirmation before sensitive submissions.</p>
         <div class="dep-tags">
-          <code>playwright-mcp</code><code>MCP tools</code>
+          <code>Camoufox</code><code>playwright-mcp (opt-in)</code>
         </div>
       </article>
     </div>
@@ -210,7 +210,7 @@ import Layout from '../layouts/Layout.astro';
       <div class="check-item"><span class="check-mark">2</span><p class="muted">Confirmation gates before destructive filesystem, shell, outbound messaging, or credential-touching actions.</p></div>
       <div class="check-item"><span class="check-mark">3</span><p class="muted">Readable audit log showing who acted: Gaia, a named soul, or an external tool.</p></div>
       <div class="check-item"><span class="check-mark">4</span><p class="muted">Memory controls: inspect, delete, export, and disable long-term memory.</p></div>
-      <div class="check-item"><span class="check-mark">5</span><p class="muted">Connector isolation so Telegram, WhatsApp, Discord, and CLI sessions do not silently share more than intended.</p></div>
+      <div class="check-item"><span class="check-mark">5</span><p class="muted">Connector isolation so Telegram, WhatsApp, and CLI sessions do not silently share more than intended.</p></div>
       <div class="check-item"><span class="check-mark">6</span><p class="muted">A security reporting path and documented threat model in the public repository.</p></div>
     </div>
   </section>
