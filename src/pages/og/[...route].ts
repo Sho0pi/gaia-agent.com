@@ -17,6 +17,11 @@ const pages = {
     description:
       'See Gaia forge, reuse, and coordinate specialist souls as a task changes.',
   },
+  integrations: {
+    title: 'Gaia Integrations',
+    description:
+      'The channels, models, tools, and skills Gaia plugs into: Telegram, WhatsApp, Gemini, OpenAI, MCP, and the toolset every soul inherits.',
+  },
 };
 
 export const { getStaticPaths, GET } = await OGImageRoute({
