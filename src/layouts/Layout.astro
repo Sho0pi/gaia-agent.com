@@ -11,7 +11,7 @@ const { title, description, active = '' } = Astro.props;
 
 const site = 'https://gaia-agent.com';
 const path = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const ogSlug = path === 'why-gaia' || path === 'how-it-works' ? path : 'index';
+const ogSlug = path === 'why-gaia' || path === 'how-it-works' || path === 'integrations' ? path : 'index';
 const ogImage = `${site}/og/${ogSlug}.png`;
 const canonical = `${site}${Astro.url.pathname}`;
 ---
@@ -181,6 +181,9 @@ const canonical = `${site}${Astro.url.pathname}`;
     {active === 'why-gaia'
       ? <a href="/why-gaia/" class="font-semibold" style="color:var(--moss);">Why</a>
       : <a href="/why-gaia/" class="hover:text-[color:var(--ink)]">Why</a>}
+    {active === 'integrations'
+      ? <a href="/integrations/" class="font-semibold" style="color:var(--moss);">Integrations</a>
+      : <a href="/integrations/" class="hover:text-[color:var(--ink)]">Integrations</a>}
     <a href="https://github.com/sho0pi/gaia#readme" target="_blank" class="hover:text-[color:var(--ink)]">Docs</a>
     <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
     <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-1.5 hover:text-[color:var(--ink)]">
@@ -201,6 +204,7 @@ const canonical = `${site}${Astro.url.pathname}`;
   <a href="/">Home</a>
   <a href="/how-it-works/">How</a>
   <a href="/why-gaia/">Why</a>
+  <a href="/integrations/">Integrations</a>
   <a href="https://github.com/sho0pi/gaia#readme" target="_blank">Docs</a>
   <a href="/#contact">Contact</a>
   <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-2">
