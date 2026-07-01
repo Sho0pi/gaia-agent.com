@@ -11,7 +11,7 @@ const { title, description, active = '' } = Astro.props;
 
 const site = 'https://gaia-agent.com';
 const path = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const ogSlug = path === 'why-gaia' || path === 'how-it-works' || path === 'integrations' || path === 'security' ? path : 'index';
+const ogSlug = path === 'why-gaia' || path === 'how-it-works' || path === 'integrations' || path === 'security' || path === 'privacy' ? path : 'index';
 const ogImage = `${site}/og/${ogSlug}.png`;
 const canonical = `${site}${Astro.url.pathname}`;
 ---
@@ -40,6 +40,10 @@ const canonical = `${site}${Astro.url.pathname}`;
   // Set theme before first paint to avoid a flash of the wrong theme
   document.documentElement.dataset.theme = localStorage.getItem('gaia-theme') || 'dark';
 </script>
+{/* Umami analytics — cookieless, no personal data (see /privacy). Production only, so local dev is not counted. */}
+{import.meta.env.PROD && (
+  <script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="bf2c9cdf-3651-4cf9-89c0-2fe08bc2a1b1"></script>
+)}
 <style is:global>
   :root {
     --bg:#F2EDE0; --bg-deep:#EAE2D0; --surface:#FBF7EC;
@@ -187,9 +191,9 @@ const canonical = `${site}${Astro.url.pathname}`;
     {active === 'security'
       ? <a href="/security/" class="font-semibold" style="color:var(--moss);">Security</a>
       : <a href="/security/" class="hover:text-[color:var(--ink)]">Security</a>}
-    <a href="https://docs.gaia-agent.com" target="_blank" class="hover:text-[color:var(--ink)]">Docs</a>
+    <a href="https://docs.gaia-agent.com" target="_blank" data-umami-event="nav-docs" class="hover:text-[color:var(--ink)]">Docs</a>
     <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
-    <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-1.5 hover:text-[color:var(--ink)]">
+    <a href="https://github.com/sho0pi/gaia" target="_blank" data-umami-event="nav-github" class="flex items-center gap-1.5 hover:text-[color:var(--ink)]">
       <Icon name="lucide:github" width="14" height="14" aria-hidden="true" />
       GitHub
     </a>
@@ -209,9 +213,9 @@ const canonical = `${site}${Astro.url.pathname}`;
   <a href="/why-gaia/">Why</a>
   <a href="/integrations/">Integrations</a>
   <a href="/security/">Security</a>
-  <a href="https://docs.gaia-agent.com" target="_blank">Docs</a>
+  <a href="https://docs.gaia-agent.com" target="_blank" data-umami-event="nav-docs">Docs</a>
   <a href="/#contact">Contact</a>
-  <a href="https://github.com/sho0pi/gaia" target="_blank" class="flex items-center gap-2">
+  <a href="https://github.com/sho0pi/gaia" target="_blank" data-umami-event="nav-github" class="flex items-center gap-2">
     <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
     GitHub
   </a>
@@ -228,6 +232,7 @@ const canonical = `${site}${Astro.url.pathname}`;
   </div>
   <nav class="flex flex-wrap items-center justify-center gap-4">
     <a href="/security/" class="hover:text-[color:var(--ink)]">Security</a>
+    <a href="/privacy/" class="hover:text-[color:var(--ink)]">Privacy</a>
     <a href="https://github.com/sho0pi/gaia" target="_blank" class="hover:text-[color:var(--ink)]">GitHub</a>
     <a href="/#contact" class="hover:text-[color:var(--ink)]">Contact</a>
   </nav>

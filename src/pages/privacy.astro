@@ -1,0 +1,127 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Rows describing exactly what the site measures. Rendered as a table below.
+const collected = [
+  { data: 'Page views', detail: 'Which pages are opened and in what order, as aggregate counts.' },
+  { data: 'Referrer', detail: 'The site or link that sent you here (for example a search engine or a post).' },
+  { data: 'Approximate region', detail: 'Country or region, derived at request time. Your IP address is never stored.' },
+  { data: 'Device basics', detail: 'Browser, operating system, and screen size bucket, so the layout can be tested where it matters.' },
+  { data: 'Clicks on key buttons', detail: 'Anonymous counts of actions like "Star on GitHub" or "Read the docs". No text you type is collected.' },
+];
+---
+<Layout
+  title="Privacy · Gaia"
+  description="What the gaia-agent.com website measures: cookieless, aggregate analytics with no personal data, no tracking cookies, and no consent banner needed."
+  active="privacy"
+>
+
+<style is:global>
+  .pv-table { width:100%; border-collapse:collapse; font-size:.92rem; }
+  .pv-table th {
+    font-family:'Cinzel',serif; font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-soft); text-align:left; border-bottom:2px solid var(--rule); padding:.8rem 1rem;
+  }
+  .pv-table td { border-bottom:1px solid var(--rule); padding:1rem; color:var(--ink-soft); vertical-align:top; line-height:1.6; }
+  .pv-table td:first-child { color:var(--ink); font-weight:600; white-space:nowrap; }
+  .pv-pill {
+    display:inline-flex; align-items:center; border:1px solid var(--rule);
+    padding:.28rem .55rem; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+    color:var(--ink-soft); background:color-mix(in srgb, var(--bg) 70%, transparent);
+  }
+  .pv-card {
+    border:1px solid var(--moss); background:color-mix(in srgb, var(--moss) 7%, var(--surface));
+    padding:1.6rem 1.5rem;
+  }
+</style>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-28">
+  <p class="eyebrow">Privacy</p>
+  <h1 class="display mt-4 text-5xl md:text-6xl leading-[1.02] tracking-tight max-w-3xl">
+    We count visits, not people.
+  </h1>
+  <p class="muted text-[16px] mt-6 max-w-2xl leading-relaxed">
+    This is the privacy notice for the <strong style="color:var(--ink);">gaia-agent.com website</strong>, not the Gaia agent you run yourself.
+    The site uses privacy-first, cookieless analytics so we can see what is useful and what is broken, without building a profile of you.
+  </p>
+  <div class="mt-8 flex flex-wrap gap-2">
+    <span class="pv-pill">no cookies</span>
+    <span class="pv-pill">no personal data</span>
+    <span class="pv-pill">no consent banner needed</span>
+    <span class="pv-pill">open-source tooling</span>
+  </div>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <p class="eyebrow mb-8">What we measure</p>
+    <div class="overflow-x-auto">
+      <table class="pv-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>What it is</th>
+          </tr>
+        </thead>
+        <tbody>
+          {collected.map((row) => (
+            <tr>
+              <td>{row.data}</td>
+              <td>{row.detail}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="muted text-sm mt-6 leading-relaxed max-w-2xl">
+      Everything above is aggregate. There is no cross-site tracking, no advertising network, no fingerprinting, and nothing that identifies you as an individual.
+    </p>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section class="grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-4">
+      <p class="eyebrow">The tool</p>
+      <h2 class="display text-3xl md:text-4xl mt-4 leading-tight tracking-tight">Umami, by design.</h2>
+    </div>
+    <div class="md:col-span-8">
+      <p class="muted leading-relaxed">
+        Analytics run through <a href="https://umami.is" target="_blank" style="color:var(--moss);">Umami</a>, an open-source, privacy-focused analytics tool.
+        It does not use cookies and does not collect personal data, which is why you did not have to click through a consent banner to read this site.
+      </p>
+      <p class="muted leading-relaxed mt-4">
+        The script only loads on the live site. It is a single lightweight file and does not follow you anywhere else.
+      </p>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <div class="pv-card">
+      <p class="eyebrow mb-3">Why there is no cookie banner</p>
+      <p class="muted leading-relaxed max-w-3xl">
+        Consent banners exist because most analytics store cookies and personal data.
+        This site does neither, so under GDPR and ePrivacy rules there is nothing to consent to.
+        We would rather show you the site than a pop-up.
+      </p>
+    </div>
+  </section>
+
+  <hr class="hr-script mt-16 mb-14" />
+
+  <section>
+    <h2 class="display text-3xl md:text-4xl tracking-tight">Questions</h2>
+    <p class="muted mt-4 max-w-2xl leading-relaxed">
+      Gaia is open source and this site is too. If something here is unclear, or you want a measurement removed, open an issue on the repository.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="https://github.com/sho0pi/gaia" target="_blank" data-umami-event="open-github" class="btn btn-primary">Open GitHub ↗</a>
+      <a href="/security/" class="btn btn-ghost">Security model</a>
+    </div>
+    <p class="muted text-xs mt-8 mono">Website analytics only. The Gaia agent you self-host keeps its own data on your machine - see the <a href="/security/" style="color:var(--moss);">security page</a>.</p>
+  </section>
+</main>
+
+</Layout>
