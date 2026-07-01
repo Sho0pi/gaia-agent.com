@@ -15,8 +15,8 @@ const channels = [
 const models = [
   { name: 'Google Gemini', icon: 'simple-icons:googlegemini', badge: 'built-in · default', cmd: 'GEMINI_API_KEY', blurb: 'The default provider, with a free-tier embedding model out of the box.' },
   { name: 'OpenAI', icon: 'simple-icons:openai', badge: 'built-in', cmd: 'OPENAI_API_KEY · --oauth', blurb: 'GPT models with text-embedding-3-small for memory. Attach an API key, or sign in with your ChatGPT subscription via gaia model --oauth.' },
-  { name: 'Anthropic Claude', icon: 'simple-icons:anthropic', badge: 'coming soon', cmd: null, blurb: 'Claude family models as a first-class provider.' },
-  { name: 'OpenRouter', icon: 'simple-icons:openrouter', badge: 'coming soon', cmd: null, blurb: 'One key, hundreds of models routed through a gateway.' },
+  { name: 'Anthropic Claude', icon: 'simple-icons:anthropic', badge: 'built-in', cmd: 'ANTHROPIC_API_KEY', blurb: 'Claude family models as a first-class provider.' },
+  { name: 'OpenRouter', icon: 'simple-icons:openrouter', badge: 'built-in', cmd: 'OPENROUTER_API_KEY', blurb: 'One key, hundreds of models routed through a single gateway.' },
   { name: 'Local models', icon: 'simple-icons:ollama', badge: 'coming soon', cmd: null, blurb: 'Run open-weight models on your own box with Ollama.' },
 ];
 
@@ -114,7 +114,7 @@ const platforms = [
       <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Channels</div>
     </div>
     <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
-      <div class="display text-4xl font-bold" style="color:var(--moss);">3</div>
+      <div class="display text-4xl font-bold" style="color:var(--moss);">4</div>
       <div class="text-xs muted mt-2" style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;">Model providers</div>
     </div>
     <div class="stat-block border-r border-[color:var(--rule)] p-6 text-center">
