@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # Fired by the gaia repo when scripts/install.sh changes, so /install.sh
+  # (fetched at build time) is re-pulled and redeployed automatically.
+  repository_dispatch:
+    types: [install-sh-updated]
 
 permissions:
   contents: read
