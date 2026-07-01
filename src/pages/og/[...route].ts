@@ -27,6 +27,11 @@ const pages = {
     description:
       'Local-first agents, real tool access, explicit data flow, and the hardening work before stable release.',
   },
+  privacy: {
+    title: 'Gaia Privacy',
+    description:
+      'What the gaia-agent.com site measures: cookieless, aggregate analytics with no personal data, no tracking cookies, and no consent banner needed.',
+  },
 };
 
 export const { getStaticPaths, GET } = await OGImageRoute({

@@ -286,12 +286,12 @@ import { Icon } from 'astro-icon/components';
         </p>
       </div>
       <div class="mt-7 flex flex-wrap items-center gap-3">
-        <a id="starBadge" href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-primary">
+        <a id="starBadge" href="https://github.com/sho0pi/gaia" target="_blank" data-umami-event="star-github" class="btn btn-primary">
           <span style="color:var(--gold);">★</span>
           Star on GitHub
           <span class="star-num" id="starCount" style="color:inherit;opacity:.7;"></span>
         </a>
-        <a href="#install" class="btn btn-ghost">Get started ↓</a>
+        <a href="#install" data-umami-event="get-started" class="btn btn-ghost">Get started ↓</a>
       </div>
       <div class="mt-4 flex items-center gap-2 text-xs muted">
         <span class="live"></span> open source · MIT · runs on macOS, Linux, Windows
@@ -324,7 +324,7 @@ import { Icon } from 'astro-icon/components';
             <span class="shell-dot g"></span>
           </span>
           <span class="shell-title">gaia@earth ~ bash</span>
-          <button class="copy-btn" id="copyBtn" onclick="copyInstall()">copy</button>
+          <button class="copy-btn" id="copyBtn" data-umami-event="copy-install" onclick="copyInstall()">copy</button>
         </div>
         <div class="vellum">
           <div><span class="p">$</span> <span class="c" id="installCmd">curl -fsSL https://gaia-agent.com/install.sh | bash</span></div>
@@ -581,7 +581,7 @@ import { Icon } from 'astro-icon/components';
   <div id="tweetWall" class="grid md:grid-cols-3 gap-0 mt-0"></div>
 
   <div class="text-center mt-12">
-    <a id="shareX" href="#" target="_blank" rel="noopener" class="btn btn-ghost">Share on X →</a>
+    <a id="shareX" href="#" target="_blank" rel="noopener" data-umami-event="share-x" class="btn btn-ghost">Share on X →</a>
     <p class="muted text-xs mt-3 mono">Tag <span style="color:var(--moss);" id="tagLabel">#gaiaagent</span> · we feature the best.</p>
   </div>
 </section>
