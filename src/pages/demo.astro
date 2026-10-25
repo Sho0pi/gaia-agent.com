@@ -1,0 +1,366 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+---
+<Layout
+  title="Demo · watch Gaia forge a soul network"
+  description="An interactive demo: watch Gaia read a task, forge specialist souls, coordinate them, return one answer, and remember what worked."
+  active="demo"
+>
+
+<style is:global>
+  /* ---- Stage ---------------------------------------------------------- */
+  .demo-stage {
+    position:relative; border:1px solid var(--rule); background:var(--surface);
+    border-radius:0; overflow:hidden;
+    aspect-ratio:16/10; min-height:420px;
+  }
+  .demo-stage::before {
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb,var(--rule) 32%,transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb,var(--rule) 32%,transparent) 1px, transparent 1px);
+    background-size:38px 38px;
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 35%, transparent 78%);
+            mask-image:radial-gradient(circle at 50% 50%, #000 35%, transparent 78%);
+  }
+  .demo-svg { position:absolute; inset:0; width:100%; height:100%; }
+
+  /* edges drawn by SVG */
+  .edge {
+    fill:none; stroke:var(--moss); stroke-width:1.4;
+    stroke-dasharray:6 6; opacity:0;
+    transition:opacity .5s ease;
+  }
+  .edge.live { opacity:.55; animation:edge-flow 1.1s linear infinite; }
+  .edge.done { opacity:.28; animation:none; stroke-dasharray:none; stroke:var(--kelp); }
+  @keyframes edge-flow { to { stroke-dashoffset:-24; } }
+
+  /* nodes (HTML, absolutely positioned over SVG) */
+  .node {
+    position:absolute; transform:translate(-50%,-50%) scale(.6);
+    opacity:0; transition:opacity .5s ease, transform .5s cubic-bezier(.2,.9,.25,1.3);
+    text-align:center; width:118px; pointer-events:none;
+  }
+  .node.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .node-chip {
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding:.5rem .7rem; border:1px solid var(--rule); background:var(--bg);
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; line-height:1;
+    white-space:nowrap; box-shadow:0 8px 24px color-mix(in srgb,var(--bg-deep) 50%,transparent);
+  }
+  .node-chip .ic { width:.95rem; height:.95rem; color:var(--moss); flex:0 0 auto; }
+  .node.working .node-chip { border-color:var(--moss); color:var(--moss); }
+  .node.working .node-chip { animation:chip-breathe 1.4s ease-in-out infinite; }
+  .node.saved .node-chip { border-color:var(--gold); color:var(--gold); }
+  .node.saved .node-chip .ic { color:var(--gold); }
+  @keyframes chip-breathe { 50% { box-shadow:0 0 0 4px color-mix(in srgb,var(--moss) 18%,transparent); } }
+  .node-label { display:block; margin-top:.4rem; font-size:.62rem; letter-spacing:.04em; color:var(--ink-soft); }
+
+  /* Gaia core */
+  .core { width:auto; }
+  .core-orb {
+    width:84px; height:84px; border-radius:50%; margin:0 auto;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid color-mix(in srgb,var(--moss) 60%,var(--rule));
+    background:radial-gradient(circle at 40% 35%, color-mix(in srgb,var(--moss) 24%,var(--surface)), var(--surface));
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--rule) 60%,transparent), 0 18px 50px color-mix(in srgb,var(--bg-deep) 60%,transparent);
+    position:relative;
+  }
+  .core-orb img { width:46px; height:46px; object-fit:contain; }
+  .core-orb::before, .core-orb::after {
+    content:""; position:absolute; inset:-6px; border-radius:50%;
+    border:1px solid color-mix(in srgb,var(--moss) 45%,transparent); opacity:0;
+  }
+  .core.pulse .core-orb::before { animation:core-ring 2s ease-out infinite; }
+  .core.pulse .core-orb::after  { animation:core-ring 2s ease-out infinite 1s; }
+  [data-theme="dark"] .core.pulse .core-orb { box-shadow:0 0 36px color-mix(in srgb,var(--glow) 30%,transparent), 0 18px 50px color-mix(in srgb,var(--bg-deep) 70%,transparent); }
+  @keyframes core-ring { 0%{opacity:.5;transform:scale(1)} 100%{opacity:0;transform:scale(1.7)} }
+  .core-name { display:block; margin-top:.55rem; font-family:'Cinzel',serif; font-weight:700; letter-spacing:.18em; font-size:.7rem; color:var(--moss); }
+
+  /* user bubble */
+  .user-bubble {
+    position:absolute; top:6%; left:50%; transform:translateX(-50%) translateY(-8px);
+    max-width:80%; opacity:0; transition:opacity .5s ease, transform .5s ease;
+    border:1px solid var(--rule); background:color-mix(in srgb,var(--moss) 7%,var(--surface));
+    padding:.6rem .85rem; font-size:.82rem; line-height:1.45; text-align:center;
+  }
+  .user-bubble.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .user-bubble .who { display:block; font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.22em; color:var(--ink-soft); margin-bottom:.25rem; }
+
+  /* narration / status line */
+  .demo-status {
+    display:flex; align-items:center; gap:.6rem; min-height:1.6rem;
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--ink-soft);
+  }
+  .demo-status .dot { width:7px; height:7px; border-radius:50%; background:var(--moss); flex:0 0 auto; animation:dotpulse 1.3s ease-in-out infinite; }
+  @keyframes dotpulse { 50% { opacity:.3; } }
+  .demo-status strong { color:var(--moss); font-weight:500; }
+
+  /* step rail */
+  .step-rail { display:grid; grid-template-columns:repeat(5,1fr); gap:.5rem; }
+  .rail-item {
+    border:1px solid var(--rule); background:var(--surface); padding:.7rem .65rem;
+    opacity:.5; transition:opacity .3s, border-color .3s;
+  }
+  .rail-item.active { opacity:1; border-color:var(--moss); }
+  .rail-item.past { opacity:.85; border-color:var(--kelp); }
+  .rail-num { font-family:'Cinzel',serif; color:var(--moss); font-size:.62rem; letter-spacing:.2em; }
+  .rail-title { display:block; margin-top:.3rem; font-size:.78rem; font-weight:600; color:var(--ink); }
+
+  .demo-btn {
+    display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1.1rem;
+    border:1px solid var(--rule); background:var(--bg); color:var(--ink);
+    font-size:.85rem; cursor:pointer; transition:all .2s;
+  }
+  .demo-btn:hover { border-color:var(--moss); color:var(--moss); }
+  .demo-btn .ic { width:1rem; height:1rem; }
+
+  @media (max-width:640px) {
+    .step-rail { grid-template-columns:1fr 1fr; }
+    .node { width:96px; }
+    .node-chip { font-size:.66rem; padding:.4rem .55rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .node, .edge, .user-bubble, .rail-item { transition:none; }
+    .edge.live, .core.pulse .core-orb::before, .core.pulse .core-orb::after,
+    .node.working .node-chip, .demo-status .dot { animation:none; }
+  }
+</style>
+
+<main class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-32">
+  <p class="eyebrow">Live demo</p>
+  <h1 class="display mt-4 text-5xl md:text-6xl leading-[1.02] tracking-tight max-w-3xl">
+    Watch Gaia forge a soul network.
+  </h1>
+  <p class="muted text-[16px] mt-6 max-w-2xl leading-relaxed">
+    One messy request comes in. Gaia reads its shape, forges the specialist
+    <span style="color:var(--moss)">souls</span> it needs, coordinates their work, returns a single answer —
+    and keeps the souls it built so the next task is faster. Press play.
+  </p>
+
+  <hr class="hr-script mt-14 mb-10" />
+
+  <!-- Stage -->
+  <div class="demo-stage reveal-skip" id="stage" aria-label="Animated demo of Gaia forging specialist souls">
+    <svg class="demo-svg" id="edges" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+    <div class="user-bubble" id="userBubble">
+      <span class="who">User</span>
+      Plan my launch: write the copy, design the page, and ship the code.
+    </div>
+
+    <!-- core -->
+    <div class="node core" id="core" style="left:50%; top:50%;">
+      <div class="core-orb"><img src="/gaia-icon.png" alt="Gaia" /></div>
+      <span class="core-name">GAIA</span>
+    </div>
+
+    <!-- souls injected by JS -->
+  </div>
+
+  <!-- Controls + status -->
+  <div class="flex flex-wrap items-center justify-between gap-4 mt-6">
+    <div class="demo-status" id="status"><span class="dot"></span><span id="statusText">Ready when you are.</span></div>
+    <div class="flex gap-3">
+      <button class="demo-btn" id="replayBtn">
+        <Icon name="lucide:play" class="ic" aria-hidden="true" />
+        <span id="replayLabel">Play demo</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step rail -->
+  <div class="step-rail mt-10">
+    <div class="rail-item" data-step="0"><div class="rail-num">I</div><span class="rail-title">Recognize</span></div>
+    <div class="rail-item" data-step="1"><div class="rail-num">II</div><span class="rail-title">Forge</span></div>
+    <div class="rail-item" data-step="2"><div class="rail-num">III</div><span class="rail-title">Coordinate</span></div>
+    <div class="rail-item" data-step="3"><div class="rail-num">IV</div><span class="rail-title">Return</span></div>
+    <div class="rail-item" data-step="4"><div class="rail-num">V</div><span class="rail-title">Remember</span></div>
+  </div>
+
+  <hr class="hr-script mt-16 mb-12" />
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="step-card" style="border:1px solid var(--rule);background:var(--surface);padding:1.35rem;">
+      <div style="font-family:'Cinzel',serif;color:var(--moss);font-size:.7rem;letter-spacing:.22em;">No fixed roster</div>
+      <p class="muted text-sm mt-3 leading-relaxed">Gaia does not ship with a fixed set of agents. It forges the souls a task actually needs, on the spot.</p>
+    </div>
+    <div class="step-card" style="border:1px solid var(--rule);background:var(--surface);padding:1.35rem;">
+      <div style="font-family:'Cinzel',serif;color:var(--moss);font-size:.7rem;letter-spacing:.22em;">One conversation</div>
+      <p class="muted text-sm mt-3 leading-relaxed">You talk to one thread. The coordination across souls happens behind the curtain.</p>
+    </div>
+    <div class="step-card" style="border:1px solid var(--rule);background:var(--surface);padding:1.35rem;">
+      <div style="font-family:'Cinzel',serif;color:var(--gold);font-size:.7rem;letter-spacing:.22em;">It remembers</div>
+      <p class="muted text-sm mt-3 leading-relaxed">Souls Gaia forges are kept and reused. The system gets faster the more you ask of it.</p>
+    </div>
+  </div>
+
+  <div class="mt-12 flex flex-wrap gap-3">
+    <a href="/how-it-works/" class="btn btn-ghost">See the lifecycle in detail</a>
+    <a href="https://github.com/sho0pi/gaia" target="_blank" class="btn btn-primary">Get Gaia on GitHub</a>
+  </div>
+</main>
+
+<script is:inline>
+(function () {
+  var stage = document.getElementById('stage');
+  if (!stage) return;
+
+  var core = document.getElementById('core');
+  var userBubble = document.getElementById('userBubble');
+  var svg = document.getElementById('edges');
+  var statusText = document.getElementById('statusText');
+  var replayBtn = document.getElementById('replayBtn');
+  var replayLabel = document.getElementById('replayLabel');
+  var rail = Array.prototype.slice.call(document.querySelectorAll('.rail-item'));
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  // viewBox is 1000 x 625; core sits at 500,312. Souls fan out below/around.
+  var CX = 500, CY = 312;
+  var souls = [
+    { id:'copywriter',  label:'writes copy',    icon:'lucide:pen-line',  x:200, y:470 },
+    { id:'designer',    label:'designs page',   icon:'lucide:palette',   x:500, y:520 },
+    { id:'frontend_dev',label:'ships code',     icon:'lucide:code-2',    x:800, y:470 }
+  ];
+
+  // build soul nodes once
+  var nodeEls = {};
+  souls.forEach(function (s) {
+    var n = document.createElement('div');
+    n.className = 'node';
+    n.id = 'node-' + s.id;
+    n.style.left = (s.x / 1000 * 100) + '%';
+    n.style.top  = (s.y / 625 * 100) + '%';
+    n.innerHTML =
+      '<span class="node-chip"><svg class="ic"></svg>' + s.id + '</span>' +
+      '<span class="node-label">' + s.label + '</span>';
+    stage.appendChild(n);
+    nodeEls[s.id] = n;
+    // lucide icon: simple swap using data — fall back to a generic glyph
+    paintIcon(n.querySelector('.ic'), s.icon);
+  });
+
+  // minimal inline icon paths (so we don't depend on astro-icon at runtime)
+  function paintIcon(svgEl, name) {
+    svgEl.setAttribute('viewBox', '0 0 24 24');
+    svgEl.setAttribute('fill', 'none');
+    svgEl.setAttribute('stroke', 'currentColor');
+    svgEl.setAttribute('stroke-width', '1.8');
+    svgEl.setAttribute('stroke-linecap', 'round');
+    svgEl.setAttribute('stroke-linejoin', 'round');
+    var paths = {
+      'lucide:pen-line': '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+      'lucide:palette': '<circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2a10 10 0 1 0 0 20 2 2 0 0 0 2-2c0-1-1-1.5-1-2.5a2 2 0 0 1 2-2h2a4 4 0 0 0 4-4 10 10 0 0 0-9-9Z"/>',
+      'lucide:code-2': '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>'
+    };
+    svgEl.innerHTML = paths[name] || '<circle cx="12" cy="12" r="9"/>';
+  }
+
+  // edges: one per soul, drawn as a path from core to soul
+  var edgeEls = {};
+  souls.forEach(function (s) {
+    var p = document.createElementNS(SVGNS, 'path');
+    p.setAttribute('class', 'edge');
+    p.setAttribute('d', edgePath(CX, CY, s.x, s.y));
+    svg.appendChild(p);
+    edgeEls[s.id] = p;
+  });
+  function edgePath(x1, y1, x2, y2) {
+    var mx = (x1 + x2) / 2, my = (y1 + y2) / 2 + 30;
+    return 'M' + x1 + ',' + y1 + ' Q' + mx + ',' + my + ' ' + x2 + ',' + y2;
+  }
+
+  // ---- scheduling -----------------------------------------------------
+  var timers = [];
+  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; }
+
+  function setStatus(html) { statusText.innerHTML = html; }
+  function setStep(i) {
+    rail.forEach(function (el, idx) {
+      el.classList.toggle('active', idx === i);
+      el.classList.toggle('past', idx < i);
+    });
+  }
+  function reset() {
+    clearAll();
+    core.classList.remove('pulse');
+    userBubble.classList.remove('show');
+    souls.forEach(function (s) {
+      nodeEls[s.id].classList.remove('show', 'working', 'saved');
+      edgeEls[s.id].setAttribute('class', 'edge');
+    });
+    rail.forEach(function (el) { el.classList.remove('active', 'past'); });
+  }
+
+  function run() {
+    reset();
+    replayLabel.textContent = 'Replay';
+
+    // 0 · Recognize
+    at(50, function () { userBubble.classList.add('show'); setStatus('User sends one request…'); });
+    at(900, function () { setStep(0); core.classList.add('pulse'); setStatus('Gaia reads the task and finds <strong>3 kinds of expertise</strong> inside it.'); });
+
+    // 1 · Forge (souls appear one by one)
+    at(2200, function () { setStep(1); setStatus('No matching soul on hand → <strong>forging</strong> specialists…'); });
+    souls.forEach(function (s, i) {
+      at(2500 + i * 650, function () {
+        nodeEls[s.id].classList.add('show');
+        edgeEls[s.id].setAttribute('class', 'edge live');
+      });
+    });
+
+    // 2 · Coordinate (souls work)
+    at(4900, function () {
+      setStep(2);
+      setStatus('Gaia <strong>coordinates</strong> the souls in parallel.');
+      souls.forEach(function (s) { nodeEls[s.id].classList.add('working'); });
+    });
+
+    // 3 · Return (work flows back, edges settle)
+    at(7000, function () {
+      setStep(3);
+      setStatus('Souls return their work. Gaia stitches it into <strong>one answer</strong>.');
+      souls.forEach(function (s) {
+        nodeEls[s.id].classList.remove('working');
+        edgeEls[s.id].setAttribute('class', 'edge done');
+      });
+    });
+
+    // 4 · Remember (souls saved → gold)
+    at(8800, function () {
+      setStep(4);
+      setStatus('Gaia <strong>keeps</strong> the souls it forged — next launch is instant.');
+      souls.forEach(function (s) { nodeEls[s.id].classList.add('saved'); });
+      core.classList.remove('pulse');
+    });
+
+    at(10600, function () {
+      setStatus('Done. The soul network persists for reuse.');
+      rail.forEach(function (el) { el.classList.add('past'); el.classList.remove('active'); });
+    });
+  }
+
+  if (reduce) {
+    // static end-state, no animation loop
+    userBubble.classList.add('show');
+    souls.forEach(function (s) {
+      nodeEls[s.id].classList.add('show', 'saved');
+      edgeEls[s.id].setAttribute('class', 'edge done');
+    });
+    rail.forEach(function (el) { el.classList.add('past'); });
+    setStatus('Gaia forges, coordinates, and remembers specialist souls.');
+    replayLabel.textContent = 'Replay';
+  } else {
+    run();
+  }
+
+  replayBtn.addEventListener('click', run);
+})();
+</script>
+
+</Layout>
+</content>
+</invoke>

@@ -185,6 +185,9 @@ const canonical = `${site}${Astro.url.pathname}`;
     {active === 'why-gaia'
       ? <a href="/why-gaia/" class="font-semibold" style="color:var(--moss);">Why</a>
       : <a href="/why-gaia/" class="hover:text-[color:var(--ink)]">Why</a>}
+    {active === 'demo'
+      ? <a href="/demo/" class="font-semibold" style="color:var(--moss);">Demo</a>
+      : <a href="/demo/" class="hover:text-[color:var(--ink)]">Demo</a>}
     {active === 'integrations'
       ? <a href="/integrations/" class="font-semibold" style="color:var(--moss);">Integrations</a>
       : <a href="/integrations/" class="hover:text-[color:var(--ink)]">Integrations</a>}
@@ -211,6 +214,7 @@ const canonical = `${site}${Astro.url.pathname}`;
   <a href="/">Home</a>
   <a href="/how-it-works/">How</a>
   <a href="/why-gaia/">Why</a>
+  <a href="/demo/">Demo</a>
   <a href="/integrations/">Integrations</a>
   <a href="/security/">Security</a>
   <a href="https://docs.gaia-agent.com" target="_blank" data-umami-event="nav-docs">Docs</a>
